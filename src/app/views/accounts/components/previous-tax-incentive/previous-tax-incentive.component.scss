@@ -1,0 +1,25 @@
+// ::ng-deep #employee-table{
+//     .mat-icon {
+//         font-size: 16px !important;
+//     }
+
+//     .mat-cell {
+//         font-size: 11px !important;
+//     }
+// }
+.mat-header-row > .mat-header-cell:first-child, .mat-row > .mat-cell:first-child{
+    max-width: 100px;
+}
+.mat-header-row > .mat-header-cell:nth-child(2), .mat-row > .mat-cell:nth-child(2){
+    max-width: 150px;
+}
+.mat-header-row > .mat-header-cell:nth-child(3), .mat-row > .mat-cell:nth-child(3){
+    max-width: 130px;
+}
+.mat-header-row > .mat-header-cell, .mat-row > .mat-cell{
+    max-width: unset;
+}
+.mat-row > .mat-cell .mat-icon-button{
+    width: 130px;
+    text-align: left;
+}

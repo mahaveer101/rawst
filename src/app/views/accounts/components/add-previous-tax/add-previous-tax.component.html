@@ -1,0 +1,61 @@
+<form [formGroup]="previousTaxForm">
+    <div mat-dialog-title class="dialog-title">
+        Tax
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="financial_year" formControlName="financial_year" placeholder="Finacial Year">
+                    <mat-option *ngFor="let each of financialYears" [value]="each"> 
+                        {{ each }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="previousTaxForm.get('financial_year').hasError('required')">
+                    Finacial year is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="total_tax" matInput placeholder="Total Tax">
+                <mat-error *ngIf="previousTaxForm.get('total_tax').hasError('required')">
+                    Tax is required
+                </mat-error>
+                <mat-error
+                    *ngIf="previousTaxForm.get('total_tax').hasError('pattern') && !previousTaxForm.get('total_tax').hasError('required')">
+                    Please Enter Digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="previous_tax_deduction" matInput placeholder="Previous Tax">
+                <mat-error *ngIf="previousTaxForm.get('previous_tax_deduction').hasError('required')">
+                   Previous Tax is required
+                </mat-error>
+                <mat-error
+                    *ngIf="previousTaxForm.get('previous_tax_deduction').hasError('pattern') && !previousTaxForm.get('previous_tax_deduction').hasError('required')">
+                    Please Enter Digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="previousTaxForm.invalid"
+                (click)="onSubmitPreviousTaxForm()"> Submit
+            </button>
+        </div>
+
+    </div>
+</form>

@@ -1,0 +1,69 @@
+<form [formGroup]="userShiftForm">
+    <div mat-dialog-title class="dialog-title">
+        {{name}} User Shift
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input type="text"
+                    placeholder="Select user"
+                    aria-label="User"
+                    matInput
+                    formControlName="user"
+                    [matAutocomplete]="userAutocomplete">
+                    <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #userAutocomplete="matAutocomplete"
+                    [displayWith]="displayFn">
+                    <mat-option *ngFor="let option of filteredUsers | async" [value]="option">
+                        {{ option.name }}
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-error>User is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input type="text"
+                    placeholder="Select Shifts"
+                    aria-label="Shifts"
+                    matInput
+                    formControlName="shift"
+                    [matAutocomplete]="shiftAutocomplete">
+                    <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #shiftAutocomplete="matAutocomplete"
+                    [displayWith]="displayFnShift">
+                    <mat-option *ngFor="let each of filteredShifts | async" [value]="each">
+                        {{ each.shift_name }}
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-error>Shift is required</mat-error>
+            </mat-form-field>
+        </div> 
+
+        <!-- <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="shift_id" formControlName="shift_id" placeholder="Shifts">
+                    <mat-option *ngFor="let each of shifts" [value]="each.id"> {{ each.shift_name }} </mat-option>
+                </mat-select>
+                <mat-error>Shifts is required</mat-error>
+            </mat-form-field>
+        </div> -->
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="userShiftForm.invalid"
+                (click)="onSubmitUserShiftForm()">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>

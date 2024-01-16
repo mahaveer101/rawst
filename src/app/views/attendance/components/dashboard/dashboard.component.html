@@ -1,0 +1,88 @@
+<div fxLayout="row wrap" *ngIf="!!attendenceRecord?.show_todays_summary">
+  <div fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100"
+    [@animate]="{ value: '*', params: { y: '50px', delay: '600ms' } }">
+    <mat-card class="p-0">
+      <mat-card-header class="title-card">
+        <mat-card-title class="card-title-text title-card-left">
+          Today's Summary: {{ user.name }}
+          <div style="float: right;">
+            <button *ngIf="attendenceRecord?.work_time_button?.start_button" mat-raised-button color="basic"
+              class="start-btn" (click)="onStartWork()">
+              Start Work
+            </button>
+            <button *ngIf="attendenceRecord?.work_time_button?.stop_button" mat-raised-button color="basic"
+              class="stop-btn" (click)="onStopWork()">
+              Stop Work
+            </button>
+            <span class="ml-24">{{ workingHours }}</span>
+          </div>
+        </mat-card-title>
+        <mat-divider></mat-divider>
+      </mat-card-header>
+      <div echarts [options]="todaySummary" style="height: 400px"></div>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" [@animate]="{ value: '*', params: { y: '50px', delay: '600ms' } }">
+    <mat-card class="p-0 ">
+      <mat-card-header class="title-card">
+        <mat-card-title class="card-title-text title-card-left">Last 7 Days Summary</mat-card-title>
+        <mat-card-title class="card-title-text title-card-right mb-0 mt-0">Total Hours: {{ attendenceRecord.total_hours
+          }}</mat-card-title>
+        <mat-divider></mat-divider>
+      </mat-card-header>
+      <div echarts [options]="lastSevenDaysSummary" style="height: 400px"></div>
+    </mat-card>
+  </div>
+  <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" [@animate]="{ value: '*', params: { y: '50px', delay: '600ms' } }">
+    <mat-card class="p-0">
+      <mat-card-header class="title-card">
+        <mat-card-title class="card-title-text title-card-left">
+          Announcements
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content class="p-0">
+        <mat-table [dataSource]="userAnnouncementsList">
+          <ng-container matColumnDef="sNo">
+            <mat-header-cell *matHeaderCellDef>
+              S.No
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row; let i = index" data-label="sNo">
+              {{ (i + 1) + (paginator.pageIndex * paginator.pageSize) }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="announcement">
+            <mat-header-cell *matHeaderCellDef> Announcements </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="announcement">
+              {{ row?.announcement?.announcement }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="type">
+            <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="type">
+              {{ row?.announcement?.type | titlecase}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>
+              Actions
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <a class="anchor-tag" (click)="markAnnouncementRead(row)">Mark Read</a>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="row?.announcement?.type === 'high'? 'high-announcement': row?.announcement?.type === 'medium'? 'medium-announcement': ''"></mat-row>
+        </mat-table>
+        <div class="p-16" *ngIf="userAnnouncementsList?.data?.length === 0">No Announcements List</div>
+        <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

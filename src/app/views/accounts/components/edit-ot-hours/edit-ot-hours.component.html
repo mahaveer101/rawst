@@ -1,0 +1,32 @@
+<form [formGroup]="otHoursForm">
+    <mat-card>
+        <div mat-dialog-title class="dialog-title">
+            OT Hours
+            <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+                aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <div mat-dialog-content class="employee-form-content">
+            <div class="pb-16">
+                <mat-form-field class="full-width">
+                    <input formControlName="ot_hours" matInput placeholder="Ot Hours">
+                    <mat-error>Ot Hours is required</mat-error>
+                </mat-form-field>
+            </div>
+            <div class="pb-16">
+                <mat-form-field class="full-width">
+                    <input formControlName="ot_hours_reason" matInput placeholder="Ot Hours Reason">
+                    <mat-error>Ot Hours Reason is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div mat-dialog-actions align="end">
+                <button type="button" mat-raised-button [disabled]="otHoursForm.invalid" color="primary"
+                    (click)="onSubmit()">
+                    Submit
+                </button>
+            </div>
+        </div>
+    </mat-card>
+</form>

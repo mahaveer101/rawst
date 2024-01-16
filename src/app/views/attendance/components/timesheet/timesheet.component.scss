@@ -1,0 +1,12 @@
+::ng-deep .cal-month-view {
+    .cal-event {
+        width: 20px !important;
+        height: 20px !important;
+        margin-top: 16px !important;
+        margin-left: 4px !important;
+    }
+
+    .cal-cell-top {
+        min-height: 40px !important;
+    }
+}

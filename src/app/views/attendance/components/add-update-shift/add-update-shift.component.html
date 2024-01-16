@@ -1,0 +1,60 @@
+<form [formGroup]="shiftForm">
+    <div mat-dialog-title class="dialog-title">
+        {{name}} Shift
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div mat-dialog-content>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="shift_name" matInput placeholder="Shift Name">
+                <mat-error>Shift name is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matTimepicker #shiftStartTimePicker="matTimepicker" name="shift_start_time"
+                    formControlName="shift_start_time" id="start-time" mode="12h" placeholder="Start Time">
+                <mat-icon matSuffix (click)="shiftStartTimePicker.showDialog()">access_time</mat-icon>
+            </mat-form-field>
+            <small
+                *ngIf="shiftForm.controls['shift_start_time'].hasError('required') && shiftForm.controls['shift_start_time'].touched"
+                class="form-error-msg"> From time is required </small>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matTimepicker #shiftEndTimePicker="matTimepicker" name="shift_end_time"
+                    formControlName="shift_end_time" id="end-time" mode="12h" placeholder="End Time">
+                <mat-icon matSuffix (click)="shiftEndTimePicker.showDialog()">access_time</mat-icon>
+            </mat-form-field>
+            <small
+                *ngIf="shiftForm.controls['shift_end_time'].hasError('required') && shiftForm.controls['shift_end_time'].touched"
+                class="form-error-msg"> To time is required </small>
+        </div>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select #itemSelect name="week_off_day" formControlName="week_off_day" placeholder="Week Off Days"
+                    multiple>
+                    <mat-option *ngFor="let each of weekday_map | keyvalue" [value]="each.key">
+                        {{ each.value }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="shiftForm.invalid" (click)="onSubmitShiftForm()">
+                Submit
+            </button>
+        </div>
+    </div>
+</form>

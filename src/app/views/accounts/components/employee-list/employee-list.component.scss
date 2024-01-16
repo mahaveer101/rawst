@@ -1,0 +1,21 @@
+::ng-deep #employee-table{
+    .mat-icon {
+        font-size: 16px !important;
+    }
+
+    .mat-cell {
+        font-size: 11px !important;
+    }
+}
+
+
+.employee-container {
+    overflow: auto;
+}
+
+table {
+    width: 1000px;
+}
+.text-alignment{
+    text-align: center;
+  }

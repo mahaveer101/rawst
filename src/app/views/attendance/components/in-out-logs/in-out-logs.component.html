@@ -1,0 +1,61 @@
+<mat-card>
+    <mat-card-content>
+        <div class="p-16 pb-0">
+            <div>
+                <mat-form-field>
+                    <input matInput name="selectDate" [max]="maxDate" [(ngModel)]="selectDate" placeholder="Select date"
+                        [matDatepicker]="myInOutDatepicker" (dateChange)="onChangeSelectDate()">
+                    <mat-datepicker-toggle matSuffix [for]="myInOutDatepicker"></mat-datepicker-toggle>
+                </mat-form-field>
+                <mat-datepicker #myInOutDatepicker></mat-datepicker>
+            </div>
+        </div>
+
+        <mat-table [dataSource]="myInOutList">
+            <ng-container matColumnDef="sNo">
+                <mat-header-cell *matHeaderCellDef>
+                    S.No
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row; let i = index" data-label="sNo">
+                    {{ i + 1}}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="attendence_date">
+                <mat-header-cell *matHeaderCellDef>
+                    Attendance Date
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="attendence_date">
+                    {{ row?.attendence_date | date }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="login_date_time">
+                <mat-header-cell *matHeaderCellDef>
+                    In Time
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="login_date_time">
+                    {{ convertDateAndTime(row?.login_date_time) }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="logout_date_time">
+                <mat-header-cell *matHeaderCellDef>
+                    Out Time
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="logout_date_time">
+                    {{ convertDateAndTime(row?.logout_date_time) }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="break_time">
+                <mat-header-cell *matHeaderCellDef>
+                    Break Time
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="break_time">
+                    {{ row?.break_time }} Min
+                </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;">
+            </mat-row>
+        </mat-table>
+        <div class="p-16" *ngIf="myInOutList.length === 0">No In/Out list</div>
+    </mat-card-content>
+</mat-card>

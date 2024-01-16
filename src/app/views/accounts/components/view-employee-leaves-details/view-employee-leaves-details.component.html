@@ -1,0 +1,29 @@
+<mat-card class="p-0">
+    <mat-card-title>
+        <div class="card-title-text table-bottom">
+            <span class="text-18">Leaves Quota</span>
+            <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </mat-card-title>
+
+    <mat-card-content class="p-0">
+        <mat-table [dataSource]="leavesData">
+            <ng-container matColumnDef="type">
+                <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="type" [matTooltip]="row?.type"> {{row?.type}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="quota">
+                <mat-header-cell *matHeaderCellDef> Quota </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="quota" [matTooltip]="row?.quota"> {{row?.quota}}
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedLeaveColumn"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedLeaveColumn;"></mat-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>

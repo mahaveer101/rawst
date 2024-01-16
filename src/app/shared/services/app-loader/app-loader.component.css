@@ -1,0 +1,7 @@
+.mat-dialog-content {
+  min-height: 122px;
+}
+
+::ng-deep .overlay-spinner {
+  z-index: 9999 !important;
+}

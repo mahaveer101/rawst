@@ -1,0 +1,153 @@
+<div mat-dialog-title class="dialog-title">
+    Employee Details
+    <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div mat-dialog-content>
+    <div class="user-details">
+        <table>
+            <tr>
+                <td class="font-weight-bold">Emp No: </td>
+                <td>{{employeeData?.emp_no}} <span *ngIf="employeeData?.timezone">({{employeeData?.timezone}})</span></td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Name: </td>
+                <td>{{employeeData?.name}}</td>
+            </tr>
+            
+            <tr>
+                <td class="font-weight-bold">Email: </td>
+                <td>{{employeeData?.email}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Phone: </td>
+                <td>{{employeeData?.phone}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Date Of Birth: </td>
+                <td>{{employeeData?.dob}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Age: </td>
+                <td>{{employeeData?.age}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Father Name: </td>
+                <td>{{employeeData?.father_name}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Adhar Card: </td>
+                <td>{{employeeData?.aadhar_card}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Pan Card: </td>
+                <td>{{employeeData?.pan_card}}</td>
+            </tr>
+            
+            <tr>
+                <td class="font-weight-bold">PF No:  </td>
+                <td>{{employeeData?.pf_no}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">PF DOJ:  </td>
+                <td>{{employeeData?.pf_doj}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">ESIC No:  </td>
+                <td>{{employeeData?.esic_no}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">ESIC DOJ: </td>
+                <td>{{employeeData?.esic_doj}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Date Of Joining: </td>
+                <td>{{employeeData?.doj}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Gender: </td>
+                <td>{{employeeData?.gender}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Blood Group: </td>
+                <td>{{employeeData?.blood_group}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Education: </td>
+                <td>{{employeeData?.education}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Pincode: </td>
+                <td>{{employeeData?.pincode}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">City: </td>
+                <td>{{employeeData?.city}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">State: </td>
+                <td>{{employeeData?.state}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Country: </td>
+                <td>{{employeeData?.country}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Department Name: </td>
+                <td>{{employeeData?.department_name}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Designation Name: </td>
+                <td>{{employeeData?.designation_name}}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Account Number: </td>
+                <td>{{employeeData?.bank?.beneficiary_ac_no}}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Beneficiary Name: </td>
+                <td>{{employeeData?.bank?.beneficiary_name}}</td>
+            </tr>
+            
+            <tr>
+                <td class="font-weight-bold">Beneficiary AC Number: </td>
+                <td>{{employeeData?.bank?.beneficiary_ac_no}}</td>
+            </tr>
+            
+            <tr>
+                <td class="font-weight-bold">IFSC Code: </td>
+                <td>{{employeeData?.bank?.ifsc_no}}</td>
+            </tr>
+            
+            <tr>
+                <td class="font-weight-bold">Bank Name: </td>
+                <td>{{employeeData?.bank?.bank_name}}</td>
+            </tr>
+            
+        </table>
+    </div>
+
+    <div mat-dialog-actions align="end">
+        <button mat-raised-button mat-dialog-close>Close</button>
+    </div>
+</div>

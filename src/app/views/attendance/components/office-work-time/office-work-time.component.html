@@ -1,0 +1,74 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="100"
+        [@animate]="{ value: '*', params: { y: '50px', delay: '800ms' } }">
+        <mat-card>
+            <mat-card-content>
+                <form>
+                    <div class="pb-10">
+                        <button type="button" (click)="fileInput.click()" mat-raised-button>
+                            Select Files
+                            <mat-icon>attach_file </mat-icon>
+                        </button>
+                        <input style="display:none" #attachments type="file" (click)= "$event.target.value = ''" (change)="onfileChanged($event)" #fileInput
+                            accept=".xlsx, .xls" />
+                    </div>
+
+                    <div *ngFor="let selected of listOfFiles; let index">
+                        {{ selected }}
+                        <button mat-icon-button (click)="removeSelectedFile(index)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                    <div class="pb-16">
+                        <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+                    </div>
+
+                    <button mat-raised-button type="button" color="primary"
+                        [disabled]="listOfFiles.length === 0"
+                        (click)="saveOfficeWorkTime()">Submit</button>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="100" fxFlex.gt-sm="75" fxFlex.sm="100">
+        <mat-card class="p-0">
+            <div class="p-16 pb-0">
+                <div>
+                    <mat-form-field>
+                        <input matInput name="shiftDate" [(ngModel)]="shiftDate" placeholder="Shift date" 
+                            [matDatepicker]="shiftDatepicker"
+                            (dateChange)="onChangeShiftDate()"
+                            >
+                        <mat-datepicker-toggle matSuffix [for]="shiftDatepicker"></mat-datepicker-toggle>
+                    </mat-form-field>
+                    <mat-datepicker #shiftDatepicker></mat-datepicker>
+                </div>
+            </div>
+            <mat-table  [dataSource]="employeeShiftTimingList">
+                <ng-container matColumnDef="empNo">
+                    <mat-header-cell *matHeaderCellDef>Emp No</mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="empNo"> {{row?.user?.emp_no}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="empName">
+                    <mat-header-cell *matHeaderCellDef> Emp Name </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="empName"> {{row?.user?.name}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="shiftStartTime">
+                    <mat-header-cell *matHeaderCellDef> Shift Start Time </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="shiftStartTime"> {{row.tz_shift_start_time}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="shiftEndTime">
+                    <mat-header-cell *matHeaderCellDef> Shift End Time </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="shiftEndTime"> {{row.tz_shift_end_time}} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="weekOff">
+                    <mat-header-cell *matHeaderCellDef> Week Off </mat-header-cell>
+                    <mat-cell *matCellDef="let row" data-label="weekOff"> {{row.week_off === '0' ? 'No': 'Yes'}} </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+            <div class="p-16" *ngIf="employeeShiftTimingList?.data?.length === 0">No List</div>
+        </mat-card>
+    </div>
+</div>

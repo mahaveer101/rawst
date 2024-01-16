@@ -1,0 +1,13 @@
+<ng-container *ngFor="let item of data; let i = index">
+    <div class="container p-8" [ngClass]="item?.type === 'high'? 'high-notification': 'medium-notification'">
+        <span>
+            {{ item.notification }}
+        </span>
+        <div>
+            <button mat-icon-button (click)="removeItem(i, item)">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+</ng-container>

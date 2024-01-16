@@ -1,0 +1,39 @@
+<form [formGroup]="approveFormGroup">
+
+    <div mat-dialog-title class="dialog-title">
+        {{ title }} Tax Saving
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="pb-16" *ngIf="data.isApprove">
+            Amount: {{ taxSavingDetails?.amount | currency:'INR' : 'symbol' }}
+        </div>
+        <div class="pb-16" *ngIf="data.isApprove">
+            <mat-form-field class="full-width">
+                <input formControlName="approve_amount" matInput placeholder="Approve amount">
+                <mat-error>Approve amount is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16" *ngIf="data.isEdit">
+            <mat-form-field class="full-width">
+                <input formControlName="approve_amount" matInput placeholder="Amount">
+                <mat-error>Amount is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="approveFormGroup.invalid"
+                (click)="onSubmitApproveForm()"> Approve
+            </button>
+        </div>
+    </div>
+</form>

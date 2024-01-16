@@ -1,0 +1,146 @@
+<div mat-dialog-title class="dialog-title">
+    Users PayRoll Details
+    <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div mat-dialog-content>
+    <div class="user-details">
+        <table>
+            <tr> 
+                <td class="font-weight-bold">Name: </td>
+                <td>{{payRollData?.user?.name}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Email: </td>
+                <td>{{payRollData?.user?.email}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Phone: </td>
+                <td>{{payRollData?.user?.phone}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Employee Number: </td>
+                <td>{{payRollData?.user?.emp_no}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Date Of Joining: </td>
+                <td>{{payRollData?.user?.doj | date}}</td>
+            </tr>
+       
+            <tr> 
+                <td class="font-weight-bold">Absent: </td>
+                <td>{{payRollData?.absent}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Final Paid Days: </td>
+                <td>{{payRollData?.final_paid_days}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Basic Earned: </td>
+                <td>{{payRollData?.basic_earned}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">HRA Earned: </td>
+                <td>{{payRollData?.hra_earned}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Conveyance Earned: </td>
+                <td>{{payRollData?.conv_earned}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Other Earned: </td>
+                <td>{{payRollData?.other_earned}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Earned Gros Total: </td>
+                <td>{{payRollData?.earned_gross_total}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">OT Hours: </td>
+                <td>{{payRollData?.ot_hours}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Good Reward: </td>
+                <td>{{payRollData?.good_reward}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">PF: </td>
+                <td>{{payRollData?.pf}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">ESIC: </td>
+                <td>{{payRollData?.esic}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">LWF: </td>
+                <td>{{payRollData?.lwf}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Advance: </td>
+                <td>{{payRollData?.adv}}</td>
+            </tr>
+
+            <tr> 
+                <td class="font-weight-bold">Arrear: </td>
+                <td>{{ ((payRollData?.payroll_extra[0] && payRollData?.payroll_extra[0]?.amount) || 0 )}}</td>
+            </tr>
+
+            <tr> 
+                <td class="font-weight-bold">Deduction: </td>
+                <td>{{ ((payRollData?.payroll_extra[1] && payRollData?.payroll_extra[1]?.amount) || 0 )}}</td>
+            </tr>
+
+            <tr> 
+                <td class="font-weight-bold">Key Performance Incentive: </td>
+                <td>{{ ((payRollData?.payroll_extra[2] && payRollData?.payroll_extra[2]?.amount) || 0 )}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">TDS: </td>
+                <td>{{payRollData?.tds}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Previous Year TDS: </td>
+                <td>{{payRollData?.previous_year_tds}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Total Deductions: </td>
+                <td>{{payRollData?.total_deduction}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Payable Amount: </td>
+                <td>{{payRollData?.payable_amount}}</td>
+            </tr>
+    
+            <tr> 
+                <td class="font-weight-bold">Net Paid: </td>
+                <td>{{payRollData?.net_paid}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div mat-dialog-actions align="end">
+    <button mat-raised-button mat-dialog-close>Close</button>
+</div>

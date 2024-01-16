@@ -1,0 +1,95 @@
+<form [formGroup]="leaveForm">
+    <div mat-dialog-title class="dialog-title">
+        Apply Leave
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="leaveType" (selectionChange)="onChangeLeaveType($event)" formControlName="leaveType"
+                    placeholder="Leave Type">
+                    <mat-option value="casual_leave"> Casual </mat-option>
+                    <mat-option value="earned_leave"> Earned </mat-option>
+                    <mat-option value="sick_leave"> Sick </mat-option>
+                    <mat-option value="short_leave"> Short Leave</mat-option>
+                    <mat-option value="comp_off"> Comp Off</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <small
+                *ngIf="leaveForm.controls['leaveType'].hasError('required') && leaveForm.controls['leaveType'].touched"
+                class="form-error-msg"> Leave type is required </small>
+        </div>
+
+        <div class="pb-16" *ngIf="leaveForm.controls['leaveType'].value !== 'short_leave' &&
+            leaveForm.controls['leaveType'].value !== 'comp_off'">
+            <mat-form-field class="full-width">
+                <mat-select name="sessionType" formControlName="sessionType" placeholder="Session Type">
+                    <mat-option value="full_day"> Full Day </mat-option>
+                    <mat-option value="half_day"> Half Day </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <small
+                *ngIf="leaveForm.controls['sessionType'].hasError('required') && leaveForm.controls['sessionType'].touched"
+                class="form-error-msg"> Session type is required </small>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matInput name="fromDate" formControlName="fromDate" placeholder="From Date"
+                    [matDatepicker]="fromDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="fromDatepicker"></mat-datepicker-toggle>
+            </mat-form-field>
+            <mat-datepicker #fromDatepicker></mat-datepicker>
+            <small *ngIf="leaveForm.controls['fromDate'].hasError('required') && leaveForm.controls['fromDate'].touched"
+                class="form-error-msg"> From date is required </small>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matInput name="toDate" formControlName="toDate" placeholder="To Date"
+                    [matDatepicker]="toDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="toDatepicker"></mat-datepicker-toggle>
+            </mat-form-field>
+            <mat-datepicker #toDatepicker></mat-datepicker>
+            <small *ngIf="leaveForm.controls['toDate'].hasError('required') && leaveForm.controls['toDate'].touched"
+                class="form-error-msg"> To date is required </small>
+        </div>
+
+        <!-- <div class="pb-16">
+            <mat-form-field class="full-width">
+                <label> Reason</label>
+                <textarea matInput formControlName="reason" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+                <mat-error>  Reason is required </mat-error>
+            </mat-form-field>
+        </div> -->
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-label>Reason</mat-label>
+                <textarea matInput formControlName="reason" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+                <mat-error
+                    *ngIf="leaveForm.controls['reason'].hasError('required') && leaveForm.controls['reason'].touched">
+                    Reason is required
+                </mat-error>
+                <mat-error
+                    *ngIf="leaveForm.get('reason').hasError('pattern') && !leaveForm.get('reason').hasError('required')">
+                    Please Enter digits and alphabets only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="leaveForm.invalid"
+                (click)="onSubmitLeaveForm()">Submit
+            </button>
+        </div>
+
+    </div>
+</form>

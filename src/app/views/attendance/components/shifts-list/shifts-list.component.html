@@ -1,0 +1,71 @@
+<div class="m-12" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <button mat-raised-button class="mb-8" color="primary" (click)="addShits()">
+        Add Shifts
+    </button>
+</div>
+
+<div class="ml-12 mr-12">
+    <mat-form-field appearance="fill" class="txt-full-width">
+      <mat-label> Search </mat-label>
+      <input matInput [(ngModel)]="searchValue" placeholder="Enter search text" (keyup.enter)="onSearchValue()">
+      <button matSuffix class="card-control" mat-icon-button (click)="onSearchValue()">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button matSuffix class="card-control" mat-icon-button (click)="clearSearchValue()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+        <mat-table [dataSource]="shiftsList">
+            <ng-container matColumnDef="sNo">
+                <mat-header-cell *matHeaderCellDef>
+                    S.No
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row; let i = index" data-label="sNo">
+                    {{ (i + 1) + (paginator.pageIndex * paginator.pageSize) }}
+                </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef>Shift Name </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="name">{{ row?.shift_name}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="shiftStartTime">
+                <mat-header-cell *matHeaderCellDef> Shift Start Time </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="shiftStartTime">
+                    {{ convertTime(row.shift_start_time)}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="shiftEndTime">
+                <mat-header-cell *matHeaderCellDef> Shift End Time </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="shiftEndTime">
+                    {{ convertTime(row.shift_end_time)}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="weekOffDay">
+                <mat-header-cell *matHeaderCellDef> Week Off Day </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="weekOffDay">
+                    {{ getWeekOffDays(row.week_off_day) }} </mat-cell>
+            </ng-container>
+            
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef>
+                    Actions
+                </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button mat-icon-button color="primary" matTooltip="Edit" (click)="updateShifts(row)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <div class="p-16" *ngIf="shiftsList?.data?.length === 0">No Shift List</div>
+        <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+    </mat-card-content>
+</mat-card>

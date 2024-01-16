@@ -1,0 +1,49 @@
+<form [formGroup]="taxSavingForm">
+
+    <div mat-dialog-title class="dialog-title">
+        Add Tax Declaration
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+    
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="savingYear" formControlName="saving_year" placeholder="Saving Year">
+                    <mat-option *ngFor="let each of taxSavingYears" [value]="each"> {{ each }} </mat-option>
+                </mat-select>
+                <mat-error>Saving year is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="savingYear" formControlName="saving_type_id" placeholder="Saving Type">
+                    <mat-option *ngFor="let each of taxSavingOptions" [value]="each.id"> 
+                        {{ each.option_name }} - {{ each.description }}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Saving type is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="amount" matInput placeholder="Amount">
+                <mat-error>Amount is required</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="taxSavingForm.invalid"
+                (click)="onSubmitTaxSavingForm()">Submit
+            </button>
+        </div>
+    </div>
+</form>

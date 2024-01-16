@@ -1,0 +1,124 @@
+<div fxLayout="row wrap">
+  <div fxFlex="100" fxFlex.gt-sm="15" fxFlex.sm="100">
+    <div class="m-12" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <button mat-raised-button color="primary" (click)="addEmployee()">
+        Create Employee
+      </button>
+    </div>
+  </div>
+  <div class="m-12" fxFlex="100" fxFlex.gt-sm="60" fxFlex.sm="100">
+    <button mat-raised-button color="primary" (click)="addBulkEmployee()">
+      Bulk upload Employees
+    </button>
+  </div>
+</div>
+<div class="ml-12 mr-12">
+  <mat-form-field appearance="fill" class="txt-full-width">
+    <mat-label> Search </mat-label>
+    <input matInput [(ngModel)]="searchValue" placeholder="Enter search text" (keyup.enter)="onSearchValue()">
+    <button matSuffix class="card-control" mat-icon-button (click)="onSearchValue()">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button matSuffix class="card-control" mat-icon-button (click)="clearSearchValue()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+<mat-card class="employee-container" id="employee-table">
+  <table mat-table [dataSource]="employeeList">
+    <ng-container matColumnDef="emp_no">
+      <th mat-header-cell *matHeaderCellDef> Emp Code </th>
+      <td mat-cell *matCellDef="let row" data-label="emp_no">
+        {{ row.emp_no }} <br><span class="text-10">({{row.timezone}})</span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let row" data-label="name"> {{row.name}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef> Phone </th>
+      <td mat-cell *matCellDef="let row" data-label="phone"> {{row.phone}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let row" data-label="email">
+        {{row.email}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="designation_name">
+      <th mat-header-cell *matHeaderCellDef> Designation </th>
+      <td mat-cell *matCellDef="let row" data-label="designation_name">
+        {{row.designation_name}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="attendance">
+      <th mat-header-cell class="pl-12 " *matHeaderCellDef> Attendance </th>
+      <td mat-cell class="pl-12" *matCellDef="let row" data-label="attendance">
+        <mat-slide-toggle [checked]="row.check_attendance === '1' ? true : false"
+          (change)="setAttendanceValue( row.id , $event )"></mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="allowance">
+      <th mat-header-cell class="pl-12 " *matHeaderCellDef> Allowance </th>
+      <td mat-cell class="pl-12" *matCellDef="let row" data-label="allowance">
+        <mat-slide-toggle [checked]="row.attendance_allowance_status === '1' ? true : false"
+          (change)="setAttendanceAllowanceValue( row.id , $event )"></mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="ot">
+      <th mat-header-cell class="pl-12 max-width-80 " *matHeaderCellDef> OT </th>
+      <td mat-cell class="pl-12" *matCellDef="let row" data-label="ot">
+        <mat-slide-toggle [checked]="row.ot_status === '1' ? true : false"
+          (change)="setOtStatus( row.id , $event )"></mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="metroCities">
+      <th mat-header-cell class="pl-12 max-width-80 " *matHeaderCellDef> Metro Cities </th>
+      <td mat-cell class="pl-12" *matCellDef="let row" data-label="metroCities">
+        <mat-slide-toggle [checked]="row.is_metro_city === '1' ? true : false"
+          (change)="setMetroCitiesStatus( row.id , $event )"></mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>
+        Actions
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-icon-button [matMenuTriggerFor]="companyMenu">
+          <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+        </button>
+        <mat-menu #companyMenu="matMenu">
+          <div class="text-alignment">
+            <a class="view-employee-btn" (click)="resetPassword(row)">Reset Password</a>
+          <div>
+              <a class="view-employee-btn" (click)="updateEmployee(row)">Edit</a>
+          </div>
+          <div>
+            <a class="view-employee-btn" (click)="viewEmployeeDetails(row.id)">View</a>
+          </div>
+          <div>
+            <a class="view-employee-btn" (click)="updatePFEsic(row)">PF-ESIC</a>
+          </div>
+          </div>
+          
+        </mat-menu>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div class="p-16" *ngIf="employeeList?.data?.length === 0">No Employee List</div>
+  <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+</mat-card>

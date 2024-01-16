@@ -1,0 +1,76 @@
+<form [formGroup]="searchForm">
+    <mat-card>
+        <mat-card-content>
+            <div class="p-16 pb-0">
+                <div>
+                    <mat-form-field>
+                        <input matInput name="date" formControlName="date"
+                            placeholder="Select Month" [matDatepicker]="monthDatepicker">
+                        <mat-datepicker-toggle  matSuffix [for]="monthDatepicker"></mat-datepicker-toggle>
+                    </mat-form-field>
+                    <mat-datepicker 
+                        #monthDatepicker
+                        startView="multi-year"
+                        (monthSelected)="setMonthAndYear($event, monthDatepicker)"
+                        panelClass="example-month-picker"
+                    ></mat-datepicker>
+
+                    <mat-form-field class="ml-36">
+                        <mat-select name="departmentId" formControlName="department_id" placeholder="Department">
+                            <mat-option *ngFor="let each of departments" [value]="each.id"> {{ each.department_name }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <button mat-raised-button [disabled]="searchForm.invalid" class="mb-8 ml-24" color="primary"
+                        (click)="onSearchTeams()">
+                        Search Teams
+                    </button>
+
+                    <button mat-raised-button [disabled]="searchForm.invalid" class="mb-8 ml-24" color="primary"
+                        (click)="onDownloadClick()">
+                        Download Teams
+                    </button>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>
+
+<div fxLayout="row wrap">
+    <mat-card fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100" *ngIf="response?.time_sheet.length">
+        <mat-card-content>
+            <table class="mat-table full-width">
+                <thead>
+                    <tr class="mat-header-row">
+                        <th class="mat-header-cell text-left">
+                            <span>{{ attendanceDate | date: 'MMM yyyy'}}</span>
+                        </th>
+                        <th class="mat-header-cell pl-3 text-left" *ngFor="let day of timesheet[0]?.time_sheet">
+                            {{ day.attendence_date | date: 'dd'}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="mat-row" *ngFor="let eachUser of timesheet">
+                        <td class="mat-cell font-weight-bold">
+                            {{ eachUser.name }}
+                        </td>
+                        <ng-container *ngFor="let day of eachUser?.time_sheet">
+                            <td class="mat-cell attendance-circle" [style.background-color]="day?.color"
+                                [matTooltip]="day.status">
+                                <a *ngIf="day.attendence === 'A'; else elseNotAbsent;" class="anchor-tag text-decoration-underline"
+                                    (click)="updateAttendance(eachUser, day)">
+                                    {{ day.attendence }}
+                                </a>
+                                <ng-template #elseNotAbsent>
+                                    {{ day.attendence }}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-card-content>
+    </mat-card>
+</div>

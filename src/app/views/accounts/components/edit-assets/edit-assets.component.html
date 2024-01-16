@@ -1,0 +1,80 @@
+<mat-card class="p-16">
+    <div mat-dialog-title class="dialog-title">
+        Edit Assets
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content class="mat-dialog-content">
+        <form [formGroup]="assetForm">
+            <div class="pb-10">
+                <mat-form-field class="full-width">
+                    <input formControlName="asset_name" matInput placeholder="Asset name">
+                    <mat-error>Asset name is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-10">
+                <mat-form-field class="full-width">
+                    <input formControlName="asset_code" matInput placeholder="Asset code">
+                    <mat-error
+                        *ngIf="assetForm.get('asset_code').hasError('required') && assetForm.get('asset_code').touched">
+                        Asset code is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="assetForm.get('asset_code').hasError('pattern') && !assetForm.get('asset_code').hasError('required')">
+                        Please Enter digits and alphabets only
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-10">
+                <mat-form-field class="full-width">
+                    <input formControlName="location" matInput placeholder="Location">
+                    <mat-error
+                        *ngIf="assetForm.get('location').hasError('required') && assetForm.get('location').touched">
+                        Location is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="assetForm.get('location').hasError('pattern') && !assetForm.get('location').hasError('required')">
+                        Please Enter digits and alphabets only
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-10">
+                <mat-form-field class="full-width">
+                    <mat-select name="category" formControlName="category" placeholder="Category">
+                        <mat-option value="Hardware"> Hardware </mat-option>
+                        <mat-option value="Software"> Software </mat-option>
+                    </mat-select>
+                    <mat-error>Category is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-10">
+                <mat-form-field class="full-width">
+                    <input formControlName="asset_type" matInput placeholder="Asset type">
+                    <mat-error>Asset type is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-10">
+                <mat-form-field class="full-width">
+                    <mat-select name="condition" formControlName="condition" placeholder="Condition">
+                        <mat-option value="New"> New </mat-option>
+                        <mat-option value="Old"> Old </mat-option>
+                    </mat-select>
+                    <mat-error>Condition is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-16">
+                <mat-error *ngIf="errorMessage"> {{errorMessage }}</mat-error>
+            </div>
+            <button mat-raised-button type="button" class="add-asset-btn" [disabled]="assetForm.invalid" color="primary"
+                align="end" (click)="onSubmitEAssetsForm()">Submit</button>
+        </form>
+    </div>
+</mat-card>

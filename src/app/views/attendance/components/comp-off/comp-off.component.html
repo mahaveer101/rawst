@@ -1,0 +1,198 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="25" fxFlex.sm="100"
+        [@animate]="{ value: '*', params: { y: '50px', delay: '800ms' } }">
+        <mat-card>
+            <mat-card-content>
+                <form [formGroup]="compOffForm">
+                    <div class="pb-10">
+                        <mat-form-field class="full-width">
+                            <input matInput name="comp_off_date" formControlName="comp_off_date" placeholder="Select a date" 
+                                [matDatepicker]="applyDatepicker">
+                            <mat-datepicker-toggle matSuffix [for]="applyDatepicker"></mat-datepicker-toggle>
+                            <mat-error>Comp Off date is required</mat-error>
+                        </mat-form-field>
+                        <mat-datepicker #applyDatepicker></mat-datepicker>
+                    </div>
+                    <div class="pb-16">
+                        <mat-form-field class="full-width">
+                            <textarea formControlName="reason" matInput placeholder="Reason"></textarea>
+                            <mat-error>Reason is required</mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="pb-16">
+                        <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+                    </div>
+
+                    <button mat-raised-button type="button" color="primary" [disabled]="compOffForm.invalid"
+                        (click)="SaveCompOff()">Submit</button>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-sm="65" fxFlex.sm="100">
+        <mat-card class="p-0">
+            <mat-tab-group>
+                <mat-tab label="Applied Comp Off">
+                    <mat-card-content>
+                        <mat-table [dataSource]="appliedCompOffForm">
+                            <ng-container matColumnDef="requestBy">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Request By
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="requestBy">
+                                    {{ row.requested_by_user?.name }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="approvedBy">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Approval By
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="approvedBy">
+                                    {{ row.approve_by_user?.name }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="comp_off_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Apply Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="comp off date">
+                                    {{ row.comp_off_date | date }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="reason">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Reason
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="reason">
+                                    {{ row.reason }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="status">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Status
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="status">
+                                    <span
+                                        [ngClass]="row?.status === '0'? 'text-red': row?.status === '1'? 'text-green': 'text-orange'">
+                                        {{ (row.status_name | titlecase) || (row.status === '0'? 'Pending': row?.status
+                                        === '1'? 'Approved': 'Rejected') }}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="appliedDisplayColumns"></mat-header-row>
+                            <mat-row *matRowDef="
+                                let row;
+                                columns: appliedDisplayColumns;
+                            ">
+                            </mat-row>
+                        </mat-table>
+                        <div class="p-16" *ngIf="appliedCompOffForm?.data?.length === 0 || !appliedCompOffForm">No
+                            applied comp-off</div>
+                    </mat-card-content>
+                </mat-tab>
+
+                <mat-tab label="Approval Comp-Off">
+                    <ng-template mat-tab-label>
+                        <div matBadge="{{approvalCompOffForm?.data?.length}}" matBadgeOverlap="false">Approval
+                            Comp Off</div>
+                    </ng-template>
+                    <mat-card-content>
+                        <mat-table [dataSource]="approvalCompOffForm">
+                            <ng-container matColumnDef="request_by">
+                                <mat-header-cell *matHeaderCellDef>Request By </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="request_by"> {{row.requested_by_user?.name}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="date">
+                                    {{ row.comp_off_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="reason">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Reason
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="reason">
+                                    {{ row.reason }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="approval_to">
+                                <mat-header-cell *matHeaderCellDef>Approval To </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="approval_to"> {{row.approve_by_user?.name}}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="status">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Status
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="status">
+                                    <span
+                                        [ngClass]="row?.status === '0'? 'text-red': row?.status === '1'? 'text-green': 'text-orange'">
+                                        {{ (row.status_name | titlecase) || (row.status === '0'? 'Pending': row?.status
+                                        === '1'? 'Approved': 'Rejected') }}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Actions
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <button mat-icon-button class="appove-btn" matTooltip="Approve"
+                                        (click)="openConfirmation(row.id, 'approve', approveConfirmation)">
+                                        <mat-icon>approvals</mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Reject"
+                                        (click)="openConfirmation(row.id, 'reject', rejectConfirmation)" color="warn">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="approvalDisplayColumns"></mat-header-row>
+                            <mat-row *matRowDef="
+                                let row;
+                                columns: approvalDisplayColumns;
+                            ">
+                            </mat-row>
+                        </mat-table>
+                        <div class="p-16" *ngIf="approvalCompOffForm?.data?.length === 0 || !approvalCompOffForm">
+                            No Comp-Off for approval</div>
+                    </mat-card-content>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>
+
+<ng-template #approveConfirmation>
+    <h2 matDialogTitle>Are you sure you want to approve?</h2>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #rejectConfirmation>
+    <h2 matDialogTitle>Are you sure you want to reject?</h2>
+    <div class="pb-16">
+        <mat-form-field class="full-width">
+            <mat-label>Reason</mat-label>
+            <textarea matInput required [(ngModel)]="rejectionReason" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+    </div>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes" [disabled]="!!!rejectionReason">Yes</button>
+    </mat-dialog-actions>
+</ng-template>

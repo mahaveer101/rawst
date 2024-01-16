@@ -1,0 +1,294 @@
+
+<form [formGroup]="employeeForm">
+
+    <div mat-dialog-title class="dialog-title">
+        Update Employee
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content class="employee-form-content">
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="empNo" matInput placeholder="Employee Code">
+                <mat-error>Employee code is required</mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="name" matInput placeholder="Employee Name">
+                <mat-error>Employee name is required</mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="fatherName" matInput placeholder="Father Name">
+                <mat-error>Father name is required</mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="aadharCard" matInput placeholder="Aadhar Card">
+                <mat-error *ngIf="employeeForm.get('aadharCard').hasError('required')">
+                    Aadhar card number is required
+               </mat-error>
+               <mat-error *ngIf="employeeForm.get('aadharCard').hasError('pattern') && !employeeForm.get('aadharCard').hasError('required')">
+                   Please Enter Digits only
+               </mat-error>
+               <mat-error> </mat-error>
+              </mat-form-field>
+        </div>
+        
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="panCard" matInput placeholder="Pan Card">
+                <mat-error *ngIf="employeeForm.get('panCard').hasError('required')">
+                    Pan Card number is required
+               </mat-error>
+               <mat-error *ngIf="employeeForm.get('panCard').hasError('pattern') && !employeeForm.get('panCard').hasError('required')">
+                   Please Enter Digits only
+               </mat-error>
+               <mat-error> </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="phoneNumber" matInput placeholder="Phone Number">
+                <mat-error *ngIf="employeeForm.get('phoneNumber').hasError('required')">
+                    Phone number is required
+               </mat-error>
+               <mat-error *ngIf="employeeForm.get('phoneNumber').hasError('pattern') && !employeeForm.get('phoneNumber').hasError('required')">
+                   Please Enter digits and 10 Digits only
+               </mat-error>
+               <mat-error> </mat-error>
+              </mat-form-field>
+        </div>
+    
+        <div class="pb-16">
+                <mat-form-field class="full-width">
+                    <input 
+                    matInput
+                    name="dob"
+                    formControlName="dob"
+                    placeholder="Date Of Birth"
+                    [matDatepicker]="dobDatepicker">
+                    <mat-error>Date of Birth is required</mat-error> 
+                    <mat-datepicker-toggle matSuffix [for]="dobDatepicker"></mat-datepicker-toggle>
+                    </mat-form-field>
+                <mat-datepicker #dobDatepicker></mat-datepicker>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input 
+                matInput
+                name="dateOfRelieving"
+                formControlName="dateOfRelieving"
+                placeholder="Date Of Relieving"
+                [matDatepicker]="dorDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="dorDatepicker"></mat-datepicker-toggle>
+                </mat-form-field>
+            <mat-datepicker #dorDatepicker></mat-datepicker>
+        </div>
+
+    
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="email" matInput placeholder="Email">
+                <mat-error> Email is required</mat-error>
+              </mat-form-field>
+        </div>
+    
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="roleId" formControlName="roleId" placeholder="Role">
+                    <mat-option *ngFor="let each of roles" [value]="each.id"> {{ each.role_name | titlecase }} </mat-option> 
+                </mat-select>
+                <mat-error>Role name is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input 
+                matInput
+                name="doj"
+                formControlName="doj"
+                placeholder="Date Of Joining"
+                [matDatepicker]="dojDatepicker">
+                <mat-error>Date of joining is required</mat-error> 
+                <mat-datepicker-toggle matSuffix [for]="dojDatepicker"></mat-datepicker-toggle>
+                </mat-form-field>
+            <mat-datepicker #dojDatepicker></mat-datepicker>
+    </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input type="text"
+                    placeholder="Reporting Manager"
+                    aria-label="Reporting Manager"
+                    matInput
+                    formControlName="parent"
+                    [matAutocomplete]="managerAutocomplete">
+                    <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #managerAutocomplete="matAutocomplete"
+                    [displayWith]="displayFn">
+                    <mat-option *ngFor="let each of filteredManagers | async" [value]="each">
+                        {{ each.name }}
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-error>Reporting Manager is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="userType" formControlName="userType" placeholder="User Type">
+                    <mat-option *ngFor="let each of userTypes" [value]="each.id"> {{ each.type | titlecase }} </mat-option> 
+                </mat-select>
+                <mat-error>User type is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="departmentId"
+                (selectionChange)="onChangeDepartment($event)" 
+                formControlName="departmentId" placeholder="Department">
+                    <mat-option *ngFor="let each of departments" [value]="each.id"> {{ each.name }} </mat-option> 
+                </mat-select>
+                <mat-error>Department Id name is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="designationId" formControlName="designationId" placeholder="Designation">
+                    <mat-option *ngFor="let each of designations" [value]="each.id"> {{ each.designation_name || each.name }} </mat-option> 
+                </mat-select>
+                <mat-error>Designation Id is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="gender" formControlName="gender" placeholder="Gender">
+                    <mat-option *ngFor="let each of genderList" [value]="each"> {{ each | titlecase }} </mat-option> 
+                </mat-select>
+                <mat-error> Gender is required</mat-error>
+            </mat-form-field>
+        </div>
+    
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="streetAddress" matInput placeholder="Street Address">
+                <mat-error>Street Address is required</mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="pincode" matInput placeholder="Pincode"
+                (change)="getStateCityAndCountry()"
+                >
+                <mat-error *ngIf="employeeForm.get('pincode').hasError('required')">
+                    Pincode is required
+                </mat-error>
+                <mat-error
+                    *ngIf="employeeForm.get('pincode').hasError('pattern') && !employeeForm.get('pincode').hasError('required')">
+                    Please Enter digits and 6 digits only
+                </mat-error>
+                <mat-error> </mat-error>
+            </mat-form-field>
+        </div> 
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="city" matInput placeholder="City">
+                <mat-error>City is required</mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="state" matInput placeholder="State">
+                <mat-error *ngIf="employeeForm.get('state').hasError('required')">
+                    State number is required
+               </mat-error>
+               <mat-error *ngIf="employeeForm.get('state').hasError('pattern') && !employeeForm.get('state').hasError('required')">
+                   Please Enter alphabets only
+               </mat-error>
+               <mat-error> </mat-error>
+              </mat-form-field>
+        </div>  
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="country" matInput placeholder="Country">
+                <mat-error *ngIf="employeeForm.get('country').hasError('required')">
+                    Country number is required
+               </mat-error>
+               <mat-error *ngIf="employeeForm.get('country').hasError('pattern') && !employeeForm.get('country').hasError('required')">
+                   Please Enter alphabets only
+               </mat-error>
+               <mat-error> </mat-error>
+              </mat-form-field>
+        </div> 
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="education" matInput placeholder="Education">
+                <mat-error *ngIf="employeeForm.get('education').hasError('required')">
+                    Education number is required
+               </mat-error>
+               <mat-error *ngIf="employeeForm.get('education').hasError('pattern') && !employeeForm.get('education').hasError('required')">
+                   Please Enter alphabets only
+               </mat-error>
+               <mat-error> </mat-error>
+              </mat-form-field>
+        </div> 
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="bloodgroup" formControlName="bloodGroup" placeholder="Blood Group">
+                    <mat-option *ngFor="let each of bloodGroupTypes" [value]="each.value"> {{ each.text }} </mat-option> 
+                </mat-select>
+                <mat-error> Blood group is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input type="text"
+                    placeholder="Time zone"
+                    aria-label="User"
+                    matInput
+                    formControlName="timezone"
+                    [matAutocomplete]="timezoneAutocomplete">
+                    <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #timezoneAutocomplete="matAutocomplete">
+                    <mat-option *ngFor="let each of filteredTimezones | async" [value]="each"> {{ each }} </mat-option>
+                </mat-autocomplete>
+                <mat-error>Time Zone is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary"
+                [disabled]="employeeForm.invalid"
+             (click)="onSubmitEmployeeForm()"> Submit
+            </button>
+        </div>
+    </div>
+</form> 
+
+

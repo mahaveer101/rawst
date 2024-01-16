@@ -1,0 +1,97 @@
+<form [formGroup]="taxSavingForm">
+
+    <div mat-dialog-title class="dialog-title">
+        Create Tax Saving
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    
+    <div mat-dialog-content>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input type="text"
+                    placeholder="Select user"
+                    aria-label="User"
+                    matInput
+                    formControlName="user"
+                    [matAutocomplete]="userAutocomplete">
+                    <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #userAutocomplete="matAutocomplete"
+                    [displayWith]="displayFn">
+                    <mat-option *ngFor="let each of filteredUsers | async" [value]="each">
+                        {{ each.name }}
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-error>User is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="savingType"
+                formControlName="savingType" placeholder="Saving Type">
+                    <mat-option *ngFor="let each of taxSavingOptions" [value]="each.id"> {{ each.description }} </mat-option> 
+                </mat-select>
+                <mat-error>Saving Type is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="savingYear"
+                formControlName="savingYear" placeholder="Saving Year">
+                    <mat-option *ngFor="let each of taxSavingYears" [value]="each"> {{ each }} </mat-option> 
+                </mat-select>
+                <mat-error>Saving year is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="amount" matInput placeholder="Amount">
+                <mat-error *ngIf="taxSavingForm.get('amount').hasError('required')">
+                    Amount is required
+               </mat-error>
+               <mat-error *ngIf="taxSavingForm.get('amount').hasError('pattern') && !taxSavingForm.get('amount').hasError('required')">
+                   Please Enter numaric only
+               </mat-error>
+               <mat-error> </mat-error>
+              </mat-form-field>
+        </div> 
+
+        <button (click)="fileInput.click()" mat-raised-button color="primary"> 
+            Select Files
+            <mat-icon>attach_file </mat-icon>
+        </button>
+        <input style="display:none"
+            #attachments
+            type="file"
+            (change)="onfileChanged($event)"
+            #fileInput
+            multiple="true"
+            accept=".pdf, .png, .jpg, .jpeg, .doc, .docx"
+        />
+       
+        <div *ngFor="let selected of listOfFiles; let index">
+            {{ selected }}
+            <button mat-icon-button (click)="removeSelectedFile(index)"> 
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary"
+                [disabled]="taxSavingForm.invalid"
+            (click)="onSubmitTaxSavingForm()">Submit
+            </button>
+        </div>
+    </div>
+</form> 
+
+

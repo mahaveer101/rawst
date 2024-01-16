@@ -1,0 +1,29 @@
+<div mat-dialog-title class="dialog-title">
+    Installment Records
+    <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<mat-card>
+    <mat-card-content>
+        <mat-table [dataSource]="installmentRecords">
+            <ng-container matColumnDef="installment_month">
+                <mat-header-cell *matHeaderCellDef> Month </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="installment_month"> {{row.installment_month | date: 'MMM yyyy' }} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="installment_amount">
+                <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="installment_amount"> {{row.installment_amount}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="status"> {{ row.status === '0' ? 'Unpaid': 'Paid'}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+    </mat-card-content>
+</mat-card>

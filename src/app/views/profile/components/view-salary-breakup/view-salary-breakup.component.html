@@ -1,0 +1,89 @@
+<div>
+    <div mat-dialog-title class="dialog-title">
+        Salary Breakup
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div>
+        <mat-card>
+            <mat-card-content>
+                <table class="mat-table full-width">
+                    <thead>
+                        <tr class="mat-header-row text-left">
+                            <th class="mat-header-cell">Earnings</th>
+                            <th class="mat-header-cell">Monthly</th>
+                            <th class="mat-header-cell">Yearly</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="mat-row" *ngFor="let eachItem of salaryBreakupData?.salary_breakup?.earning">
+                            <td class="mat-cell">
+                                {{ eachItem.name | uppercase }}
+                            </td>
+                            <td class="mat-cell">
+                                {{ toFloat(eachItem.monthly) | currency : 'INR': 'symbol' }}
+                            </td>
+                            <td class="mat-cell">
+                                {{ toFloat(eachItem.annually) | currency : 'INR': 'symbol' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <!-- <div>
+        <mat-card>
+            <mat-card-content>
+                <table class="mat-table full-width">
+                    <thead>
+                        <tr class="mat-header-row text-left">
+                            <th class="mat-header-cell">Deduction</th>
+                            <th class="mat-header-cell">Monthly</th>
+                            <th class="mat-header-cell">Yearly</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="mat-row" *ngFor="let eachItem of salaryBreakupData?.salary_breakup?.deduction">
+                            <td class="mat-cell">
+                                {{ eachItem.name | uppercase }}
+                            </td>
+                            <td class="mat-cell">
+                                {{ toFloat(eachItem.monthly) | currency : 'INR': 'symbol'}}
+                            </td>
+                            <td class="mat-cell">
+                                {{ toFloat(eachItem.annually) | currency : 'INR': 'symbol' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div>
+        <mat-card>
+            <mat-card-content>
+                <table class="mat-table full-width">
+                    <tbody>
+                        <tr class="mat-row" *ngFor="let eachItem of salaryBreakupData?.salary_breakup?.net_pay">
+                            <td class="mat-cell">
+                                {{ eachItem.name | uppercase }}
+                            </td>
+                            <td class="mat-cell">
+                                {{ toFloat(eachItem.monthly) | currency : 'INR': 'symbol' }}
+                            </td>
+                            <td class="mat-cell">
+                                {{ toFloat(eachItem.annually) | currency : 'INR': 'symbol' }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div> -->
+</div>

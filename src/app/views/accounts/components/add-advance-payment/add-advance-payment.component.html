@@ -1,0 +1,75 @@
+<form [formGroup]="advancePaymentForm">
+
+    <div mat-dialog-title class="dialog-title">
+        Create Empolyee
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content class="employee-form-content">
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="payment_to" formControlName="payment_to" placeholder="Payment To">
+                    <mat-option *ngFor="let each of users" [value]="each.id"> {{ each.name }} </mat-option>
+                </mat-select>
+                <mat-error>Payment to is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="payment_amount" matInput placeholder="Payment Amount">
+                <mat-error
+                    *ngIf="advancePaymentForm.get('payment_amount').hasError('required') && advancePaymentForm.get('payment_amount').touched">
+                    Payment Amount is required
+                </mat-error>
+                <mat-error
+                    *ngIf="advancePaymentForm.get('payment_amount').hasError('pattern') && !advancePaymentForm.get('payment_amount').hasError('required')">
+                    Please Enter digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="installment_amount" matInput placeholder="Installment Amount">
+                <mat-error
+                    *ngIf="advancePaymentForm.get('installment_amount').hasError('required') && advancePaymentForm.get('installment_amount').touched">
+                    Installment Amount is required
+                </mat-error>
+                <mat-error
+                    *ngIf="advancePaymentForm.get('installment_amount').hasError('pattern') && !advancePaymentForm.get('installment_amount').hasError('required')">
+                    Please Enter digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matInput name="start_month" formControlName="start_month"
+                    placeholder="Start Month" [matDatepicker]="startMonthDatepicker">
+                <mat-error>Start Month is required</mat-error>
+                <mat-datepicker-toggle  matSuffix [for]="startMonthDatepicker"></mat-datepicker-toggle>
+            </mat-form-field>
+            <mat-datepicker 
+                #startMonthDatepicker
+                startView="multi-year"
+                (monthSelected)="setMonthAndYear($event, startMonthDatepicker)"
+                panelClass="example-month-picker"
+            ></mat-datepicker>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="advancePaymentForm.invalid"
+                (click)="onSubmitAdvancePaymentForm()"> Submit
+            </button>
+        </div>
+    </div>
+</form>

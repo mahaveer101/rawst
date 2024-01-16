@@ -1,0 +1,16 @@
+.container {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.high-notification {
+    background-color: #ff3d57 !important;
+    color: #FFFFFF;
+}
+
+.medium-notification {
+    background-color: #ff8a65 !important;
+    color: #FFFFFF;
+}

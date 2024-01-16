@@ -1,0 +1,63 @@
+<div class="m-12" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+  <button mat-raised-button class="mb-8" color="primary" (click)="addSalaryBreakup()">
+    Add Salary Breakup
+  </button>
+  <button mat-raised-button class="mb-8 ml-24" color="primary" (click)="addBulkSalaryBreakup()">
+    Add Bulk Salary Breakup
+  </button>
+</div>
+
+<div class="ml-12 mr-12">
+  <mat-form-field appearance="fill" class="txt-full-width">
+    <mat-label> Search </mat-label>
+    <input matInput [(ngModel)]="searchValue" placeholder="Enter search text" (keyup.enter)="onSearchValue()">
+    <button matSuffix class="card-control" mat-icon-button (click)="onSearchValue()">
+      <mat-icon>search</mat-icon>
+    </button>
+    <button matSuffix class="card-control" mat-icon-button (click)="clearSearchValue()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+  <mat-card-content class="p-0">
+    <mat-table [dataSource]="salaryBreakupList">
+      <ng-container matColumnDef="user_id">
+        <mat-header-cell *matHeaderCellDef> User ID </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="user_id"> {{row?.user_records?.name}} - {{row?.user_records?.emp_no}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="beneficiary_ac_no">
+        <mat-header-cell *matHeaderCellDef> Acc No </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="beneficiary_ac_no"> {{row.beneficiary_ac_no }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="beneficiary_name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="beneficiary_name"> {{row.beneficiary_name }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="bank_name">
+        <mat-header-cell *matHeaderCellDef> Bank Name </mat-header-cell>
+        <mat-cell *matCellDef="let row" data-label="bank_name"> {{row.bank_name }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+          Actions
+        </mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-icon-button matTooltip="View" (click)="viewSalaryBreakupDetails(row.user_id)">
+            <mat-icon>remove_red_eye</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+    <div class="p-16" *ngIf="salaryBreakupList?.data?.length === 0">No Salary breakup list</div>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+  </mat-card-content>
+</mat-card>

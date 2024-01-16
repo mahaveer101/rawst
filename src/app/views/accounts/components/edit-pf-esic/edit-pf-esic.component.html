@@ -1,0 +1,69 @@
+
+<form [formGroup]="pfEsicForm">
+
+    <div mat-dialog-title class="dialog-title">
+        Update Pf and ESIC
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content class="employee-form-content">
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="pfNo" matInput placeholder="PF Number">
+                <mat-error>PF Number is required</mat-error>
+              </mat-form-field>
+        </div>
+    
+        <div class="pb-16">
+                <mat-form-field class="full-width">
+                    <input 
+                    matInput
+                    name="pfDoj"
+                    formControlName="pfDoj"
+                    placeholder="PF Date Of Joining"
+                    [matDatepicker]="pfDojDatepicker">
+                    <mat-error>PF Date of joining </mat-error> 
+                    <mat-datepicker-toggle matSuffix [for]="pfDojDatepicker"></mat-datepicker-toggle>
+                    </mat-form-field>
+                <mat-datepicker #pfDojDatepicker></mat-datepicker>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="esicNo" matInput placeholder="ESIC number">
+                <mat-error>ESIC Number is required</mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input 
+                matInput
+                name="esicDoj"
+                formControlName="esicDoj"
+                placeholder="ESIC date Of Joining"
+                [matDatepicker]="esicDojDatePicker">
+                <mat-error>Date of joining is required</mat-error> 
+                <mat-datepicker-toggle matSuffix [for]="esicDojDatePicker"></mat-datepicker-toggle>
+                </mat-form-field>
+            <mat-datepicker #esicDojDatePicker></mat-datepicker>
+    </div>
+
+        
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary"
+                [disabled]="pfEsicForm.invalid"
+             (click)="onSubmitPfEsicForm()"> Submit
+            </button>
+        </div>
+    </div>
+</form> 
+
+

@@ -1,0 +1,45 @@
+<div class="m-12" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <button mat-raised-button class="mb-8" color="primary" (click)="addAdvancePayment()">
+      Add Advance Payment
+    </button>
+</div>
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+      <mat-table [dataSource]="advancedPaymentList">
+        <ng-container matColumnDef="payment_to">
+          <mat-header-cell *matHeaderCellDef> Payment To </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="payment_to"> {{ getPaymentTo(row?.payment_to)}} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="payment_amount">
+          <mat-header-cell *matHeaderCellDef> Payment Amount </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="payment_amount"> {{toFloat (row.payment_amount)| currency : 'INR': 'symbol' }} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="installment_amount">
+          <mat-header-cell *matHeaderCellDef> Installment Amount </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="installment_amount"> {{row.installment_amount | currency : 'INR': 'symbol' }} </mat-cell>
+        </ng-container>
+  
+        <ng-container matColumnDef="start_month">
+          <mat-header-cell *matHeaderCellDef> Start Month</mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="start_month"> {{row.start_month | date: 'MMM yyyy' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>
+            Actions
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-icon-button matTooltip="View" (click)="viewAdvancePaymentDetails(row?.user_installment_records)">
+              <mat-icon>remove_red_eye</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+  
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <div class="p-16" *ngIf="advancedPaymentList?.data?.length === 0">No advanced payment list</div>
+      <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+    </mat-card-content>
+  </mat-card>

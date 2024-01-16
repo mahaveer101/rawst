@@ -1,0 +1,47 @@
+<div class="ml-12 mr-12">
+    <mat-form-field appearance="fill" class="txt-full-width">
+        <mat-label> Search </mat-label>
+        <input matInput [(ngModel)]="searchValue" placeholder="Enter search text" (keyup.enter)="onSearchValue()">
+        <button matSuffix class="card-control" mat-icon-button (click)="onSearchValue()">
+            <mat-icon>search</mat-icon>
+        </button>
+        <button matSuffix class="card-control" mat-icon-button (click)="clearSearchValue()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+</div>
+
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+        <mat-table [dataSource]="employeeList">
+            <ng-container matColumnDef="name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="name" [matTooltip]="row.name"> {{row.name}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+                <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="email" [matTooltip]="row.email">
+                    {{row.email}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="phone">
+                <mat-header-cell class="display-table-cell" *matHeaderCellDef> Phone </mat-header-cell>
+                <mat-cell class="display-table-cell" *matCellDef="let row" data-label="phone"> {{row.phone}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="department_name">
+                <mat-header-cell *matHeaderCellDef> Department </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="department_name" [matTooltip]="row.department_name">
+                    {{row.department_name}}
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <div class="p-16" *ngIf="employeeList?.data?.length === 0">No Employee List</div>
+        <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+    </mat-card-content>
+</mat-card>

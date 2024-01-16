@@ -1,0 +1,51 @@
+
+<form [formGroup]="holidayForm">
+    <div mat-dialog-title class="dialog-title">
+        Holiday
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="holidayName" matInput placeholder="Holiday Name">
+                <mat-error
+                    *ngIf="holidayForm.get('holidayName').hasError('required') && holidayForm.get('holidayName').touched">
+                    Holiday name is required
+                </mat-error>
+                <mat-error
+                    *ngIf="holidayForm.get('holidayName').hasError('pattern') && !holidayForm.get('holidayName').hasError('required')">
+                    Please Enter digits and alphabets only
+                </mat-error>
+              </mat-form-field>
+        </div> 
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input 
+                matInput
+                name="holidayDate"
+                formControlName="holidayDate"
+                placeholder="Holiday Date"
+                [matDatepicker]="holidayDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="holidayDatepicker"></mat-datepicker-toggle>
+                <mat-error> Holiday Date </mat-error>
+            </mat-form-field>
+            <mat-datepicker #holidayDatepicker></mat-datepicker>
+        </div> 
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary"
+                [disabled]="holidayForm.invalid"
+             (click)="onSubmitHolidayForm()">Submit
+            </button>
+        </div>
+    </div>
+</form> 

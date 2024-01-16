@@ -1,0 +1,55 @@
+<form [formGroup]="announcementsForm">
+    <div mat-dialog-title class="dialog-title">
+        {{name}} Announcement
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div mat-dialog-content>
+        <div class="pb-16" *ngIf="data.isAdd">
+            <mat-form-field class="full-width">
+                <mat-select name="departmentId" formControlName="departmentId" placeholder="Department">
+                    <mat-option value="all"> All </mat-option>
+                    <mat-option *ngFor="let each of departments" [value]="each.id"> {{ each.department_name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Department name is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="announcement" matInput placeholder="Announcement">
+                <mat-error>Announcements is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="type" formControlName="type" placeholder="Type">
+                    <mat-option value="normal"> Normal </mat-option>
+                    <mat-option value="medium"> Medium </mat-option>
+                    <mat-option value="high"> High </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <small
+                *ngIf="announcementsForm.controls['type'].hasError('required') && announcementsForm.controls['type'].touched"
+                class="form-error-msg"> Type is required </small>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="announcementsForm.invalid"
+                (click)="onSubmitAnnouncementsForm()">Submit
+            </button>
+        </div>
+
+    </div>
+
+</form>

@@ -1,0 +1,152 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100">
+        <mat-card class="user-card p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-16">Company Info</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <table class="mat-table full-width">
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold">Company Name: </td>
+                        <td class="mat cell"> {{userDetails?.company?.company_name}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold">Education: </td>
+                        <td class="mat cell"> {{userDetails?.company?.education}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold">Department Name: </td>
+                        <td class="mat cell"> {{userDetails?.company?.department_name}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold">Designation: </td>
+                        <td class="mat cell"> {{userDetails?.company?.designation_name}}</td>
+                    </tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50">
+        <mat-card class="user-card p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <a href="" class="toolbar-avatar sm mr-16"><img [src]="userDetails?.details?.profile_pic" alt=""></a>
+                    <span class="text-16">{{userDetails?.details?.name}}</span><br>
+                    <span fxFlex></span>
+                     <button mat-icon-button [matMenuTriggerFor]="personalInfo" class="">
+                        <mat-icon class="text-muted text-18">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #personalInfo="matMenu">
+                        <button mat-menu-item (click)="editProfileProfile()">Edit Image</button>
+                        <button mat-menu-item (click)="openConfirmation(deleteImagePic)">Delete Image</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <table class="mat-table full-width">
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Name: </td>
+                        <td> {{userDetails?.details?.name}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Father Name: </td>
+                        <td> {{userDetails?.details?.father_name}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Age: </td>
+                        <td> {{userDetails?.details?.age}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Emp No: </td>
+                        <td> {{userDetails?.details?.emp_no}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Phone: </td>
+                        <td> {{userDetails?.details?.phone}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Email: </td>
+                        <td> {{userDetails?.details?.email}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Gender: </td>
+                        <td> {{userDetails?.details?.gender}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">DOB: </td>
+                        <td> {{userDetails?.details?.dob | date}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Date OF Joining: </td>
+                        <td> {{userDetails?.details?.doj | date}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Education: </td>
+                        <td> {{userDetails?.details?.education}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat-cell font-weight-bold">Blood Group: </td>
+                        <td> {{userDetails?.details?.blood_group}}</td>
+                    </tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50">
+        <mat-card class="user-card p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-16">Address Info</span>
+                    <span fxFlex></span>
+                    <!-- <button mat-icon-button [matMenuTriggerFor]="addressInfo" class="">
+                        <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #addressInfo="matMenu">
+                        <button mat-menu-item (click)="editUserAddress()">Edit</button>
+                    </mat-menu> -->
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <table class="mat-table full-width">
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold"> Street Address: </td>
+                        <td class="mat cell"> {{userDetails?.address?.street_address}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold">City: </td>
+                        <td class="mat cell"> {{userDetails?.address?.city}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold">State: </td>
+                        <td class="mat cell"> {{userDetails?.address?.state}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold">Country: </td>
+                        <td class="mat cell"> {{userDetails?.address?.country}}</td>
+                    </tr>
+                    <tr class="mat-row">
+                        <td class="mat cell font-weight-bold">Pincode: </td>
+                        <td class="mat cell"> {{userDetails?.address?.pincode}}</td>
+                    </tr>
+
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<ng-template #deleteImagePic>
+    <h2 matDialogTitle>Are you sure Delete Profile?</h2>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>

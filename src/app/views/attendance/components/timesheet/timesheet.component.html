@@ -1,0 +1,55 @@
+<div class="m-12" *ngIf="(+userDetails?.role_id) <= 3">
+    <button mat-raised-button color="primary"  (click)="addBulkTimesheet()">
+      Upload Attendance 
+    </button>
+</div>
+<mat-card class="p-0" [@animate]="{value:'*',params:{delay:'200ms',y:'40px'}}">
+    <mat-card-title class="mat-bg-primary">
+        <div [ngStyle]="{overflow: 'hidden'}" class="card-title-text calendar-title">
+            <!-- Arrow navigations -->
+            <div class="cal-top-col text-center">
+                <button mat-icon-button mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (click)="goToNextOrPreviousMonth()">
+                    <mat-icon class="text-white">chevron_left</mat-icon>
+                </button>
+                <button mat-icon-button mwlCalendarToday [(viewDate)]="viewDate" (click)="goToNextOrPreviousMonth()">
+                    <mat-icon class="text-white">today</mat-icon>
+                </button>
+                <button mat-icon-button mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (click)="goToNextOrPreviousMonth()">
+                    <mat-icon class="text-white">chevron_right</mat-icon>
+                </button>
+            </div>
+
+            <!-- Date title -->
+            <div class="cal-top-col text-center">
+                <h5 class="m-0 text-white" [style.lineHeight]="'40px'">{{ viewDate | calendarDate:(view +
+                    'ViewTitle'):'en' }}</h5>
+            </div>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-card-title>
+
+    <!-- Calendar -->
+    <mat-card-content class="p-0">
+        <mwl-calendar-month-view [cellTemplate]="customCellTemplate" [viewDate]="viewDate" [events]="events"
+            [refresh]="refresh"  [activeDayIsOpen]="activeDayIsOpen">
+        </mwl-calendar-month-view>
+        <ng-template #customCellTemplate let-day="day" let-locale="locale">
+            <div class="cal-cell-top">
+                <span class="cal-day-badge" *ngIf="day?.events[0]?.type" title="{{ day?.events[0]?.title }}">{{
+                    day?.events[0]?.type }}</span>
+                <span class="cal-event" *ngIf="day?.events[0]?.color" [style.background-color]="day?.events[0]?.color?.primary">
+                </span>
+                <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+            </div>
+            <div class="p-4 text-10" *ngIf="day?.events[0]?.meta?.working_hours && day?.events[0]?.meta?.working_hours !== '00:00'">
+                Working Hours: {{ day?.events[0]?.meta?.working_hours }}
+            </div>
+            <div class="p-4 text-10" *ngIf="day?.events[0]?.meta?.ot_hours && +day?.events[0]?.meta?.ot_hours > 0">
+                OT Hours: {{ day?.events[0]?.meta?.ot_hours }}H
+            </div>
+            <div class="p-4 text-10" *ngIf="day?.events[0]?.meta?.late_login_time_diff && day?.events[0]?.meta?.late_login_time_diff !== '00:00:00'">
+                Late Hours: {{ getHoursAndMinutes(day?.events[0]?.meta?.late_login_time_diff) }}H
+            </div>
+        </ng-template>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,79 @@
+<form [formGroup]="companyForm">
+    <div mat-dialog-title class="dialog-title">
+       Company
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="companyName" matInput placeholder="Company Name">
+                <mat-error> Company name required </mat-error>
+              </mat-form-field>
+        </div>
+        
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="email" matInput placeholder="Email">
+                <mat-error> Email required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="contactNumber" matInput placeholder="Contact Number">
+                <mat-error> Contact number required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="streetAddress" matInput placeholder="Street Address">
+                <mat-error> Street address required </mat-error>
+              </mat-form-field>
+        </div>
+        
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="city" matInput placeholder="City">
+                <mat-error> City required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="state" matInput placeholder="State">
+                <mat-error> State required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="pincode" matInput placeholder="Pincode">
+                <mat-error> Pincode required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="country" matInput placeholder="Country">
+                <mat-error>Country required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary"
+                [disabled]="companyForm.invalid"
+             (click)="onSubmitCompanyForm()">Submit
+            </button>
+        </div>
+    </div>
+</form> 
+

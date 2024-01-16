@@ -1,0 +1,59 @@
+<mat-card>
+    <mat-card-content>
+        <div>
+            <button (click)="fileInputPartA.click()" mat-raised-button color="primary">
+                Form-16 Part A
+                <mat-icon>attach_file </mat-icon>
+            </button>
+            <input style="display:none" type="file" (change)="onfileChangedFormA($event)" #fileInputPartA
+                accept=".zip" />
+            
+            <div *ngIf="fileNamePartA">
+                {{ fileNamePartA }}
+                <button mat-icon-button (click)="removeSelectedFilePartA()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="pb-16">
+                <mat-error *ngIf="errorMessagePartA"> {{ errorMessagePartA }}</mat-error>
+            </div>
+            
+            <div mat-dialog-actions>
+                <button mat-raised-button color="primary"
+                    [disabled]="!filePartA"
+                 (click)="submitForm16FormA()">Submit
+                </button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-content>
+        <div>
+            <button (click)="fileInputPartB.click()" mat-raised-button color="primary">
+                Form-16 Part B
+                <mat-icon>attach_file </mat-icon>
+            </button>
+            <input style="display:none" type="file" (change)="onfileChangedFormB($event)" #fileInputPartB
+                accept=".zip" />
+            
+            <div *ngIf="fileNamePartB">
+                {{ fileNamePartB }}
+                <button mat-icon-button (click)="removeSelectedFilePartB()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="pb-16">
+                <mat-error *ngIf="errorMessagePartB"> {{ errorMessagePartB }}</mat-error>
+            </div>
+            
+            <div mat-dialog-actions>
+                <button mat-raised-button color="primary"
+                    [disabled]="!filePartB"
+                 (click)="submitForm16FormB()">Submit
+                </button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

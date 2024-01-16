@@ -1,0 +1,75 @@
+<div mat-dialog-title class="dialog-title">
+    Salary Breakup Details
+    <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div mat-dialog-content>
+    <div class="user-details">
+        <table>
+            <tr>
+                <td class="font-weight-bold">Name: </td>
+                <td>{{salaryBreakpData?.user_records?.name}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Account Number: </td>
+                <td>{{salaryBreakpData?.beneficiary_ac_no}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Beneficiary name: </td>
+                <td>{{salaryBreakpData?.beneficiary_name}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">IFSC Code: </td>
+                <td>{{salaryBreakpData?.ifsc_no}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Bank name: </td>
+                <td>{{salaryBreakpData?.bank_name}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Basic: </td>
+                <td>{{toFloat (salaryBreakpData?.user_salary_records?.basic) | currency : 'INR': 'symbol'}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">HRA: </td>
+                <td>{{toFloat (salaryBreakpData?.user_salary_records?.hra) | currency : 'INR': 'symbol'}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Conveyance: </td>
+                <td>{{toFloat (salaryBreakpData?.user_salary_records?.conv) | currency : 'INR': 'symbol'}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">Others: </td>
+                <td>{{toFloat (salaryBreakpData?.user_salary_records?.other) | currency : 'INR': 'symbol'}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">PF: </td>
+                <td>{{toFloat (salaryBreakpData?.user_salary_records?.pf) | currency : 'INR': 'symbol'}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">ESIC: </td>
+                <td>{{toFloat (salaryBreakpData?.user_salary_records?.esic) | currency : 'INR': 'symbol'}}</td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold">LWF: </td>
+                <td>{{toFloat (salaryBreakpData?.user_salary_records?.lwf) | currency : 'INR': 'symbol'}}</td>
+            </tr>
+            <tr>
+                <td class="font-weight-bold">Total Earnings: </td>
+                <td>{{(toFloat(salaryBreakpData?.user_salary_records?.basic)+toFloat(salaryBreakpData?.user_salary_records?.hra)+toFloat(salaryBreakpData?.user_salary_records?.conv)+toFloat(salaryBreakpData?.user_salary_records?.other))| currency : 'INR': 'symbol'}} </td>
+            </tr>
+        </table>
+    </div>
+</div>

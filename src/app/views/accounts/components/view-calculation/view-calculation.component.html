@@ -1,0 +1,195 @@
+<div mat-dialog-title class="dialog-title">
+    Tax Calculation
+    <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div mat-dialog-content>
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100">
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Name of Assessee</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">{{ calculationList?.user?.name }}</div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Father Name:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">{{ calculationList?.user?.father_name }}</div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Address:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    <div>{{ calculationList?.user?.street_address }}</div>
+                    <div>{{ calculationList?.user?.state }}</div>
+                    <div>{{ calculationList?.user?.pincode }}</div>
+                </div>
+            </div>
+
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Financial Year <p class="font-weight-bold">
+                        {{ calculationList?.financial_year }} </p>
+                </div>
+                <div fxFlex.gt-sm="50">Pan Card<p class="font-weight-bold">
+                        {{ calculationList?.user?.pan_card }} </p>
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Date Of Birth <p class="font-weight-bold">
+                        {{ calculationList?.user?.dob }} </p>
+                </div>
+                <div fxFlex.gt-sm="50">Mobile No<p class="font-weight-bold">
+                        {{ calculationList?.user?.phone }} </p>
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="100">Gender<p class="font-weight-bold">
+                        {{ calculationList?.user?.gender }} </p>
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Company Name</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">{{calculationList?.company?.company_name}}</div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Company Address</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{calculationList?.company?.street_address}}
+                    {{calculationList?.company?.state}},
+                    {{calculationList?.company?.country}},
+                    {{calculationList?.company?.pincode}}
+                </div>
+            </div>
+
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="100" class="font-weight-bold">Gross Earnings</div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Total Salary:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.salary?.Total?.basic | currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Total Conv:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.salary?.Total?.conv | currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Others:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.salary?.Total?.other| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Incentive:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.salary?.Total?.kpi | currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">HRA:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.salary?.Total?.hra| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Total Salary:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.total_salary| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">H.R.A. Exempt u/s 10(13A):</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    -{{+calculationList?.hra| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Standard Deduction u/s 16(ia):</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    -{{+calculationList?.standard_deduction| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Total Income:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.gross_total_income| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="100" class="font-weight-bold"> Savings</div>
+            </div>
+            <div fxLayout="row wrap" *ngFor="let eachSaving of calculationList?.savings">
+                <div fxFlex.gt-sm="50">{{ eachSaving.option_name }}</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">{{ +eachSaving?.amount | currency : 'INR':
+                    'symbol'}}</div>
+            </div>
+
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Total Saving:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    - {{+calculationList?.total_saving| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Total Income:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.taxable_income| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Round off u/s 288 A:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.round_off_288a| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="100" class="font-weight-bold"> Tax Calculation</div>
+            </div>
+            <div fxLayout="row wrap" *ngFor="let each of calculationList?.tax_data">
+                <div fxFlex.gt-sm="50">{{ each.income_slab }}</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">{{ +each?.tax | currency : 'INR':
+                    'symbol'}}</div>
+            </div>
+
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Total Tax:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.total_tax| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Rebate u/s 87A:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    - {{+calculationList?.rebate_87a| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">surcharge:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.surcharge| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Net Tax:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.net_tax| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Previous tax Deduction:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                   - {{+calculationList?.previous_tax_deduction| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="50">Remaining Tax:</div>
+                <div fxFlex.gt-sm="50" class="font-weight-bold">
+                    {{+calculationList?.remaining_tax| currency : 'INR': 'symbol'}}
+                </div>
+            </div>
+        </div>
+    </div>
+   

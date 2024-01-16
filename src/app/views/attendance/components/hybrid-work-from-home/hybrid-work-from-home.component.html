@@ -1,0 +1,206 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="35" fxFlex.sm="100">
+        <mat-card class="p-0">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-16">Request New Approval</span>
+                    <span fxFlex></span>
+                </div>
+            </mat-card-title>
+            <mat-card-content>
+                <form [formGroup]="HybrideWFHForm">
+                    <div class="pb-16">
+                        <mat-form-field class="full-width">
+                            <input matInput name="approvalStartDate" formControlName="approvalStartDate"
+                                placeholder="Start Date" [matDatepicker]="approveStartDatepicker">
+                            <mat-datepicker-toggle matSuffix [for]="approveStartDatepicker"></mat-datepicker-toggle>
+                        </mat-form-field>
+                        <mat-datepicker #approveStartDatepicker></mat-datepicker>
+                        <small
+                            *ngIf="HybrideWFHForm.controls['approvalStartDate'].hasError('required') && HybrideWFHForm.controls['approvalStartDate'].touched"
+                            class="form-error-msg"> Start date is required </small>
+                    </div>
+
+                    <div class="pb-16">
+                        <mat-form-field class="full-width">
+                            <input matInput name="approvalEndDate" formControlName="approvalEndDate"
+                                placeholder="End Date" [matDatepicker]="approveEndDate">
+                            <mat-datepicker-toggle matSuffix [for]="approveEndDate"></mat-datepicker-toggle>
+                        </mat-form-field>
+                        <mat-datepicker #approveEndDate></mat-datepicker>
+                        <small
+                            *ngIf="HybrideWFHForm.controls['approvalEndDate'].hasError('required') && HybrideWFHForm.controls['approvalEndDate'].touched"
+                            class="form-error-msg"> End date is required </small>
+                    </div>
+
+                    <div class="pb-16">
+                        <mat-form-field class="full-width">
+                            <mat-label>Reason</mat-label>
+                            <textarea matInput formControlName="reason" ></textarea>
+                            <mat-error> Reason is required </mat-error>
+                        </mat-form-field>
+                    </div> 
+                    <div class="pb-16">
+                        <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+                    </div>
+                    <button mat-raised-button type="button" color="primary" [disabled]="HybrideWFHForm.invalid"
+                        (click)="applyHybrideWFH()">Apply</button>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-sm="65" fxFlex.sm="100">
+        <mat-card class="p-0">
+            <mat-tab-group>
+                <mat-tab label="Applied WFH">
+
+                    <mat-card-content>
+                        <mat-table [dataSource]="appliedHybrideWFH">
+                            <ng-container matColumnDef="approve_start_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Start Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="Start Date">
+                                    {{ row.approve_start_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="approve_end_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    End Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="End Date">
+                                    {{ row.approve_end_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="reason">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Reason
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="reason">
+                                    {{ row.reason }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="status">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Status
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="status">
+                                    <span [ngClass]="row?.status === '0'? 'text-red': row?.status === '1'? 'text-green': 'text-orange'">
+                                        {{(row.status_name | titlecase) ||(row.status === '0'? 'Pending': row.status === '1'? 'Accepted': 'Rejected')}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="appliedDisplayColumns"></mat-header-row>
+                            <mat-row *matRowDef="
+                                let row;
+                                columns: appliedDisplayColumns;
+                            ">
+                            </mat-row>
+                        </mat-table>
+                        <div class="p-16" *ngIf="appliedHybrideWFH?.data?.length === 0 || !appliedHybrideWFH">
+                            No WFH for applied</div>
+                    </mat-card-content>
+                </mat-tab>
+
+                <mat-tab label="Approval WFH">
+                    <ng-template mat-tab-label>
+                        <div matBadge="{{approvalHybrideWFH?.data?.length}}" matBadgeOverlap="false">Approval WFH</div>
+                    </ng-template>
+                    <mat-card-content>
+                        <mat-table [dataSource]="approvalHybrideWFH">
+                            <ng-container matColumnDef="applied_by_user">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Applied By
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="Applied By">
+                                    {{ row?.applied_by_user?.name }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="approve_start_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Start Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="Start Date">
+                                    {{ row.approve_start_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="approve_end_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    End Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="End Date">
+                                    {{ row.approve_end_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="reason">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Reason
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="reason">
+                                    {{ row.reason }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="status">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Status
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="status">
+                                    <span [ngClass]="row?.status === '0'? 'text-red': row?.status === '1'? 'text-green': 'text-orange'">
+                                        {{(row.status_name | titlecase) ||(row.status === '0'? 'Pending': row.status === '1'? 'Accepted': 'Rejected')}}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Actions
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <button mat-icon-button class="appove-btn" matTooltip="Approve"
+                                        (click)="openConfirmation(row.id, 'approve', approveConfirmation)">
+                                        <mat-icon>approvals</mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Reject"
+                                        (click)="openConfirmation(row.id, 'reject', rejectConfirmation)" color="warn">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="ApprovalDisplayColumns"></mat-header-row>
+                            <mat-row *matRowDef="
+                        let row;
+                        columns: ApprovalDisplayColumns;
+                    ">
+                            </mat-row>
+                        </mat-table>
+                        <div class="p-16" *ngIf="approvalHybrideWFH?.data?.length === 0 || !approvalHybrideWFH">
+                            No applied Hybride WFH
+                        </div>
+                    </mat-card-content>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>
+
+<ng-template #approveConfirmation>
+    <h2 matDialogTitle>Are you sure you want to approve?</h2>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #rejectConfirmation>
+    <h2 matDialogTitle>Are you sure you want to reject?</h2>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>

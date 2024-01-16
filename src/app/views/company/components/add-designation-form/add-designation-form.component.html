@@ -1,0 +1,45 @@
+<form [formGroup]="designationForm">
+
+    <div mat-dialog-title class="dialog-title">
+        {{name}} Designation
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="departmentId" formControlName="departmentId" placeholder="Department">
+                    <mat-option *ngFor="let each of departments" [value]="each.id"> {{ each.department_name }}
+                    </mat-option>
+                </mat-select>
+                <mat-error>Department name is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="designationName" matInput placeholder="Designation Name">
+                <mat-error>Designation name is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-slide-toggle formControlName="attendance" >Attendance</mat-slide-toggle>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="designationForm.invalid"
+                (click)="onSubmitDesignationForm()">Submit
+            </button>
+        </div>
+    </div>
+   
+</form>

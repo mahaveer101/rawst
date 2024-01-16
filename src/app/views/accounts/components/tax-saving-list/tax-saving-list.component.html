@@ -1,0 +1,201 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+  <mat-tab label="Tax Saving">
+    <div class="m-12" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <button mat-raised-button class="mb-8" color="primary" (click)="addTaxSaving()">
+        Add Tax Saving
+      </button>
+    </div>
+    <div class="ml-12 mr-12">
+      <mat-form-field appearance="fill" class="txt-full-width">
+        <mat-label> Search </mat-label>
+        <input matInput [(ngModel)]="searchValue" placeholder="Enter search text" (keyup.enter)="onSearchValue()">
+        <button matSuffix class="card-control" mat-icon-button (click)="onSearchValue()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <button matSuffix class="card-control" mat-icon-button (click)="clearSearchValue()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <mat-card-content class="p-0">
+        <mat-table [dataSource]="taxSavingList">
+          <ng-container matColumnDef="user_id">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell class="name" *matCellDef="let row" data-label="user_id">
+               {{row?.user?.name}} <p class="text-10">({{row?.user?.emp_no}})</p>
+               </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="saving_type">
+            <mat-header-cell *matHeaderCellDef>Saving Type </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="saving_type"> {{row.saving_type}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="saving_year">
+            <mat-header-cell *matHeaderCellDef>Saving Year </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="saving_year"> {{row.saving_year}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="amount"> {{(row?.amount || 0) | currency:'INR' : 'symbol'}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="approveAmount">
+            <mat-header-cell *matHeaderCellDef>Approve Amount </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="approveAmount"> {{(row?.approve_amount || 0) | currency:'INR' :
+              'symbol'}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="documents">
+            <mat-header-cell *matHeaderCellDef> Documents </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="documents">
+              <div class="example-flex-container">
+                <div *ngFor="let document of row.documents">
+                  <button mat-icon-button (click)="viewDocument(document)">
+                    <mat-icon>attach_file </mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef>
+              Status
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              {{ (row.saving_status === '0'? 'Pending': row.saving_status === '1'? 'Accepted': 'Rejected') }}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>
+              Actions
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <button *ngIf="row.saving_status !== '0'" mat-icon-button color="primary" matTooltip="Edit"
+                (click)="updateAmount(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button *ngIf="row.saving_status === '0'" mat-icon-button color="primary" matTooltip="Approve"
+                (click)="updateStatus(row)">
+                <mat-icon>approvals</mat-icon>
+              </button>
+              <button *ngIf="row.saving_status === '0'" mat-icon-button matTooltip="Reject"
+                (click)="openRejectConfirmation(row.tax_saving_id, rejectConfirmation)" color="warn">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <div class="p-16" *ngIf="taxSavingList?.data?.length === 0">No Tax saving list</div>
+        <mat-paginator #taxPaginator="matPaginator" [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+      </mat-card-content>
+    </mat-card>
+
+    <ng-template #rejectConfirmation>
+      <h2 matDialogTitle>Are you sure you want to reject?</h2>
+      <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes">Yes</button>
+      </mat-dialog-actions>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab label="House Rent">
+    <div class="m-12" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <button mat-raised-button class="mb-8" color="primary" (click)="addHouseRent()">
+        Add House Rent
+      </button>
+    </div>
+    <div class="ml-12 mr-12">
+      <mat-form-field appearance="fill" class="txt-full-width">
+        <mat-label> Search </mat-label>
+        <input matInput [(ngModel)]="searchValue" placeholder="Enter search text" (keyup.enter)="onHouseRentSearchValue()">
+        <button matSuffix class="card-control" mat-icon-button (click)="onHouseRentSearchValue()">
+          <mat-icon>search</mat-icon>
+        </button>
+        <button matSuffix class="card-control" mat-icon-button (click)="clearHouseRentSearchValue()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+      <mat-card-content class="p-0">
+        <mat-table [dataSource]="houseRentList">
+
+          <ng-container matColumnDef="user_name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell class="name" *matCellDef="let row" data-label="user_name">  
+             {{row?.user_records?.name}} <p class="text-10">({{row?.user_records?.emp_no}})</p>
+            </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="rent">
+            <mat-header-cell *matHeaderCellDef> Rent </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="rent"> {{row.rent}} </mat-cell>
+          </ng-container>
+          
+          <ng-container matColumnDef="from_year_month">
+            <mat-header-cell *matHeaderCellDef>From Year Month </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="from_year_month"> {{row.from_year_month | date: 'MMM yyyy'}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="to_year_month">
+            <mat-header-cell *matHeaderCellDef>To Year Month   </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="to_year_month"> {{row.to_year_month | date: 'MMM yyyy'}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="city">
+            <mat-header-cell *matHeaderCellDef> City </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="city"> {{(row?.city)}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="finacial_year">
+            <mat-header-cell *matHeaderCellDef>  Finacial Year </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="finacial_year"> {{(row?.financial_year )}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="documents">
+            <mat-header-cell *matHeaderCellDef> Documents </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="documents">
+              <div class="example-flex-container">
+                <div *ngFor="let document of row.users_house_rent_docs_records">
+                  <button mat-icon-button (click)="viewDocumentHouseRent(document?.doc_url)">
+                    <mat-icon>attach_file </mat-icon>
+                  </button>
+                </div>
+              </div>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>
+              Actions
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <button mat-icon-button color="primary" matTooltip="Edit" (click)="updateHouseRent(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="primary" matTooltip="Document Edit" (click)="updateHouseRentDocument(row)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumnsHouseRent"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumnsHouseRent;"></mat-row>
+        </mat-table>
+        <div class="p-16" *ngIf="houseRentList?.data?.length === 0">No House Rent list</div>
+        <mat-paginator #houseRentPaginator="matPaginator" [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,314 @@
+<div fxLayout="row">
+    <button mat-icon-button routerLink="/accounts/grades-list">
+        <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span fxFlex></span>
+</div>
+
+<mat-card class="p-0">
+    <mat-card-title class="mb-16">
+        <div class="card-title-text">
+            <span class="text-13">Employee Information</span>
+            <span fxFlex></span>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <div class="" fxLayout="row" fxLayoutAlign="space-between">
+            <div class="box">
+                <p>Name: {{ gradesData?.user_list?.name }}</p>
+                <p>Phone: {{ gradesData?.user_list?.phone }}</p>
+                <p>Date Of Joining: {{ gradesData?.user_list?.doj | date }}</p>
+            </div>
+            <div class="box">
+                <p>Employee No: {{ gradesData?.user_list?.emp_no }}</p>
+                <p>Email: {{ gradesData?.user_list?.email }}</p>
+                <p>Education: {{ gradesData?.user_list?.education }}</p>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card class="p-0">
+    <mat-card-title class="mb-16">
+        <div class="card-title-text">
+            <span class="text-13">Current Position </span>
+            <span fxFlex></span>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <div class="" fxLayout="row" fxLayoutAlign="space-between">
+            <div class="box">
+                <p>Department: {{ gradesData?.user_list?.department_name }}</p>
+                <p>Reporting Manager: {{ gradesData?.user_list?.reporting_person }}</p>
+            </div>
+            <div class="box">
+                <p>Designation: {{ gradesData?.user_list?.designation_name }}</p>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-title class="mb-16">
+        <div class="card-title-text">
+            <span class="text-13">Previous Salary Raise </span>
+            <span fxFlex></span>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <mat-table [dataSource]="gradesSalaryList">
+            <ng-container matColumnDef="hike_year">
+                <mat-header-cell *matHeaderCellDef>Year </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="hike_year"> {{row?.hike_year}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="hike_date">
+                <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="hike_date"> {{row?.hike_date | date}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="grade">
+                <mat-header-cell *matHeaderCellDef> Grade </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="grade"> {{row?.grade}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="percentage">
+                <mat-header-cell *matHeaderCellDef> Percentage </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="percentage"> {{row.percentage}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="designation">
+                <mat-header-cell *matHeaderCellDef> Designation </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="designation"> {{ getDesignation(row.designation_id)}}
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="salary">
+                <mat-header-cell *matHeaderCellDef> Salary </mat-header-cell>
+                <mat-cell *matCellDef="let row" data-label="salary"> {{row.previous_salary}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+        <div class="p-16" *ngIf="!gradesSalaryList || gradesSalaryList?.data?.length === 0">No previous hikes</div>
+    </mat-card-content>
+</mat-card>
+
+<form [formGroup]="feedbackForm">
+    <mat-card>
+        <mat-card-title class="mb-16">
+            <div class="card-title-text">
+                <span class="text-13">Behaviours</span>
+                <span fxFlex></span>
+            </div>
+        </mat-card-title>
+        <mat-card-content>
+
+            <table class="mat-table behaviour-table">
+                <thead>
+                    <tr class="mat-header-row">
+                        <th class="mat-header-cell">Quality</th>
+                        <th class="mat-header-cell">Poor</th>
+                        <th class="mat-header-cell">Unsatisfactory</th>
+                        <th class="mat-header-cell">Satisfactory</th>
+                        <th class="mat-header-cell">Good</th>
+                        <th class="mat-header-cell">Excellent</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="mat-row" *ngFor="let eachQuality of qualities">
+                        <td class="mat-cell">
+                            {{ eachQuality.name }}
+                        </td>
+                        <td class="mat-cell">
+                            <input type="radio" formControlName="{{ eachQuality.controlName }}"
+                             [value]="'poor'" />
+                        </td>
+                        <td class="mat-cell">
+                            <input type="radio" formControlName="{{ eachQuality.controlName }}"
+                                [value]="'unsatisfactory'" />
+                        </td>
+                        <td class="mat-cell">
+                            <input type="radio" formControlName="{{ eachQuality.controlName }}"
+                                [value]="'satisfactory'">
+                        </td>
+                        <td class="mat-cell">
+                            <input type="radio" formControlName="{{ eachQuality.controlName }}" 
+                            [value]="'good'" />
+                        </td>
+                        <td class="mat-cell">
+                            <input type="radio" formControlName="{{ eachQuality.controlName }}" 
+                            [value]="'excellent'" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-card-content>
+    </mat-card>
+    <mat-card>
+        <mat-card-content>
+            <div class="pb-16">
+                <mat-radio-group 
+                    formControlName="type" 
+                    aria-label="Select an option"
+                    (change)="onChangeAppraisalType($event)"
+                >
+                    <mat-radio-button value="percentage">Percentage</mat-radio-button>
+                    <mat-radio-button class="ml-12" value="flat">Flat</mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div class="pb-16" *ngIf="feedbackForm.controls['type'].value === 'percentage'">
+                <mat-form-field class="full-width">
+                    <mat-select name="grade" (selectionChange)="onChangeGrade($event)" formControlName="grade"
+                        placeholder="Grade">
+                        <mat-option *ngFor="let each of grades" [value]="each.slug"> {{ each.name | titlecase }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Grade is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-16" *ngIf="feedbackForm.controls['type'].value === 'flat'">
+                <mat-form-field class="full-width">
+                    <input formControlName="basic" matInput placeholder="Basic" (change)="onChangeFlatSal()">
+                    <mat-error
+                        *ngIf="feedbackForm.get('basic').hasError('required') && feedbackForm.get('basic').touched">
+                        Basic is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="feedbackForm.get('basic').hasError('pattern') && !feedbackForm.get('basic').hasError('required')">
+                        Please Enter digits and alphabets only
+                    </mat-error>
+                </mat-form-field>
+            </div>
+    
+            <div class="pb-16" *ngIf="feedbackForm.controls['type'].value === 'flat'">
+                <mat-form-field class="full-width">
+                    <input formControlName="hra" matInput placeholder="HRA" (change)="onChangeFlatSal()">
+                    <mat-error
+                        *ngIf="feedbackForm.get('hra').hasError('required') && feedbackForm.get('hra').touched">
+                        HRA is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="feedbackForm.get('hra').hasError('pattern') && !feedbackForm.get('hra').hasError('required')">
+                        Please Enter digits only
+                    </mat-error>
+                </mat-form-field>
+            </div>
+    
+            <div class="pb-16" *ngIf="feedbackForm.controls['type'].value === 'flat'">
+                <mat-form-field class="full-width">
+                    <input formControlName="conv" matInput placeholder="Conveyance" (change)="onChangeFlatSal()">
+                    <mat-error
+                        *ngIf="feedbackForm.get('conv').hasError('required') && feedbackForm.get('conv').touched">
+                        Conveyance is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="feedbackForm.get('conv').hasError('pattern') && !feedbackForm.get('conv').hasError('required')">
+                        Please Enter digits only
+                    </mat-error>
+                </mat-form-field>
+            </div>
+    
+            <div class="pb-16" *ngIf="feedbackForm.controls['type'].value === 'flat'">
+                <mat-form-field class="full-width">
+                    <input formControlName="other" matInput placeholder="Other" (change)="onChangeFlatSal()">
+                    <mat-error
+                        *ngIf="feedbackForm.get('other').hasError('required') && feedbackForm.get('other').touched">
+                        Other is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="feedbackForm.get('other').hasError('pattern') && !feedbackForm.get('other').hasError('required')">
+                        Please Enter digits only
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-16">
+                <mat-form-field class="full-width">
+                    <mat-select name="department_id" (selectionChange)="onChangeDepartment($event)"
+                        formControlName="department_id" placeholder="Department">
+                        <mat-option *ngFor="let each of departments" [value]="each.id"> {{ each.name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Department is required</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="pb-16">
+                <mat-form-field class="full-width">
+                    <mat-select name="designation_id" (selectionChange)="onChangeDesignation($event)"
+                        formControlName="designation_id" placeholder="Designation">
+                        <mat-option *ngFor="let each of designations" [value]="each.id"> {{ each.name ||
+                            each.designation_name }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error>Designation is required</mat-error>
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>
+
+<mat-card>
+    <mat-card-title class="mb-16">
+        <div class="card-title-text">
+            <span class="text-13">New Salary Hike</span>
+            <span fxFlex></span>
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+
+        <table class="mat-table behaviour-table">
+            <thead>
+                <tr class="mat-header-row">
+                    <th class="mat-header-cell">Year</th>
+                    <th class="mat-header-cell">Date</th>
+                    <th class="mat-header-cell" *ngIf="feedbackForm.controls['type'].value === 'percentage'">Grade</th>
+                    <th class="mat-header-cell" *ngIf="feedbackForm.controls['type'].value === 'percentage'">Percentage</th>
+                    <th class="mat-header-cell" *ngIf="feedbackForm.controls['type'].value === 'flat'">Flat</th>
+                    <th class="mat-header-cell">Designation</th>
+                    <th class="mat-header-cell">Previous Salary</th>
+                    <th class="mat-header-cell">New Salary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="mat-row">
+                    <td class="mat-cell">
+                        {{ newSalaryHike.year }}
+                    </td>
+                    <td class="mat-cell">
+                        {{ newSalaryHike.date | date }}
+                    </td>
+                    <td class="mat-cell" *ngIf="feedbackForm.controls['type'].value === 'percentage'">
+                        {{ newSalaryHike.grade }}
+                    </td>
+                    <td class="mat-cell" *ngIf="feedbackForm.controls['type'].value === 'percentage'">
+                        {{ newSalaryHike.percentage }}
+                    </td>
+                    <td class="mat-cell" *ngIf="feedbackForm.controls['type'].value === 'flat'">
+                        {{ newSalaryHike.flat }}
+                    </td>
+                    <td class="mat-cell">
+                        {{ newSalaryHike.designation }}
+                    </td>
+                    <td class="mat-cell">
+                        {{ newSalaryHike.previousSal }}
+                    </td>
+                    <td class="mat-cell">
+                        {{ newSalaryHike.newSal }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </mat-card-content>
+</mat-card>
+<div class="pb-16">
+    <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+</div>
+<div class="text-center pb-16">
+    <button mat-raised-button color="primary" [disabled]="feedbackForm.invalid" (click)="onSubmitFeedbackForm()"> Submit
+    </button>
+</div>

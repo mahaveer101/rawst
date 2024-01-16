@@ -1,0 +1,57 @@
+<form [formGroup]="gradeTypesForm">
+    <div mat-dialog-title class="dialog-title">
+        Grades
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="aPlusGrade" matInput placeholder="A+">
+                <mat-error> A+ grade percentage required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="aGrade" matInput placeholder="A">
+                <mat-error> A grade percentage required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="bPlusGrade" matInput placeholder="B+">
+                <mat-error> B+ grade percentage required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="bGrade" matInput placeholder="B">
+                <mat-error> B grade percentage required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="cGrade" matInput placeholder="C">
+                <mat-error> C grade percentage required </mat-error>
+              </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary"
+                [disabled]="gradeTypesForm.invalid"
+             (click)="onSubmiGradeTypesForm()">Submit
+            </button>
+        </div>
+    </div>
+</form> 

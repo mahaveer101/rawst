@@ -1,0 +1,340 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab label="My Tax">
+        <mat-card>
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-16">Earnings From Employement</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <div fxLayout="row wrap">
+                    <div fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100">
+                        <div fxLayout="row wrap">
+                            <div fxFlex.gt-sm="25">Total Salary <p class="font-weight-bold">
+                                    {{toFloat(myTaxResponse?.total_salary) | currency : 'INR' : 'symbol'}} </p>
+                            </div>
+                            <div fxFlex.gt-sm="25">HRA <p class="font-weight-bold">{{myTaxResponse?.hra | currency :
+                                    'INR' : 'symbol'}} </p>
+                            </div>
+                            <div fxFlex.gt-sm="25">Standared deductions <p class="font-weight-bold">
+                                    {{toFloat(myTaxResponse?.standard_deduction) | currency : 'INR' : 'symbol'}} </p>
+                            </div>
+                            <div fxFlex.gt-sm="25"> Total Saving <p class="font-weight-bold">
+                                    {{myTaxResponse?.total_saving | currency : 'INR': 'symbol'}} </p>
+                            </div>
+                        </div>
+                        <div fxLayout="row wrap">
+                            <div fxFlex.gt-sm="25"> Taxable Income <p class="font-weight-bold">
+                                    {{toFloat(myTaxResponse?.taxable_income) | currency : 'INR' : 'symbol'}} </p>
+                            </div>
+                            <div fxFlex.gt-sm="25"> Total Tax <p class="font-weight-bold">
+                                    {{myTaxResponse?.total_tax | currency : 'INR' : 'symbol'}} </p>
+                            </div>
+                            <div fxFlex.gt-sm="25"> Surcharge <p class="font-weight-bold">
+                                    {{myTaxResponse?.surcharge | currency : 'INR' : 'symbol'}} </p>
+                            </div>
+                            <div fxFlex.gt-sm="25"> Net Tax <p class="font-weight-bold">{{myTaxResponse?.net_tax |
+                                    currency : 'INR' : 'symbol'}}
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-16">Gross Earnings From Employement</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content class="overflow-auto">
+                <table class="mat-table behaviour-table full-width">
+                    <thead>
+                        <tr class="mat-header-row">
+                            <ng-container *ngFor="let each of grossEarnings?.headers">
+                                <th class="mat-header-cell pl-12">{{ each }}</th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="mat-row" *ngFor="let each of grossEarnings?.data">
+                            <ng-container *ngFor="let eachValue of each">
+                                <td class="mat-cell pl-12">
+                                    {{ eachValue }}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-16">Savings</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <mat-table [dataSource]="myTaxSavingOptions">
+                    <ng-container matColumnDef="option_name">
+                        <mat-header-cell *matHeaderCellDef> Section </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="option_name"> {{row?.option_name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef>Deduction Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="description"> {{row?.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="amount">
+                        <mat-header-cell *matHeaderCellDef>Amount</mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="amount"> {{row?.amount | currency : 'INR':
+                            'symbol'}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="myTaxSavingDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: myTaxSavingDisplayedColumns;"></mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="taxSavingOptions?.data?.length === 0">No Tax declaration list</div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card>
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-16">Tax Calculation</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <mat-table [dataSource]="myTaxSlab">
+                    <ng-container matColumnDef="income_slab">
+                        <mat-header-cell *matHeaderCellDef> Taxable Income Slab </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="income_slab"> {{row?.income_slab}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="tax">
+                        <mat-header-cell *matHeaderCellDef>Tax Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="tax"> {{row?.tax | currency : 'INR': 'symbol'}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="myTaxSlabDisplayColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: myTaxSlabDisplayColumns;"></mat-row>
+                </mat-table>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-16">Monthly Tax Deduction Details</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content class="overflow-auto">
+                <table class="mat-table behaviour-table full-width">
+                    <thead>
+                        <tr class="mat-header-row">
+                            <th class="mat-header-cell">Month</th>
+                            <ng-container *ngFor="let each of monthlyTaxData?.headers">
+                                <th class="mat-header-cell pl-12">{{ each }}</th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="mat-row">
+                            <td class="mat-cell">Monthly Total Tax</td>
+                            <ng-container *ngFor="let eachValue of  monthlyTaxData?.data">
+                                <td class="mat-cell text-12 pl-12">
+                                    {{ eachValue | currency : 'INR': 'symbol' }}
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </mat-card-content>
+        </mat-card>
+
+    </mat-tab>
+    <mat-tab label="My Declaration">
+        <mat-card>
+            <mat-card-content>
+                <div *ngIf="response?.show_button" class="m-12"
+                    [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+                    <button mat-raised-button class="mb-8" color="primary" (click)="addTaxDeclaration()">
+                        Add Tax Declaration
+                    </button>
+
+                    <button class="ml-24" mat-raised-button color="primary" (click)="downloadForm16PartA()">
+                        Form-16 Part A Download
+                        <mat-icon>download </mat-icon>
+
+                    </button>
+                    <button class="ml-24" mat-raised-button color="primary" (click)="downloadForm16PartB()">
+                        Form-16 Part B Download
+                        <mat-icon>download</mat-icon>
+                    </button>
+                    <div class="pb-16">
+                        <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+                    </div>
+                </div>
+                <mat-table [dataSource]="taxSavings">
+                    <ng-container matColumnDef="saving_year">
+                        <mat-header-cell *matHeaderCellDef> Saving Year </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="saving_year"> {{row?.saving_year}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="option_name">
+                        <mat-header-cell *matHeaderCellDef> Section </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="option_name">
+                            {{row?.tax_saving_options?.option_name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef> Deduction Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="description">
+                            {{row?.tax_saving_options?.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="amount">
+                        <mat-header-cell *matHeaderCellDef> Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="amount"> {{toFloat(row.amount) | currency : 'INR':
+                            'symbol'}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="approveAmount">
+                        <mat-header-cell *matHeaderCellDef> Approve Amount </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="approveAmount"> {{toFloat(row.approve_amount) |
+                            currency : 'INR':
+                            'symbol'}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="documents">
+                        <mat-header-cell *matHeaderCellDef> Documents </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="documents" style="flex-wrap: wrap; flex-basis: 5%;">
+                            <ng-container *ngFor="let document of row.documents">
+                                <button mat-icon-button (click)="viewDocument(document)">
+                                    <mat-icon>attach_file </mat-icon>
+                                </button>
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef>
+                            Status
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            {{ (row.saving_status === '0'? 'Pending': row.saving_status === '1'? 'Accepted': 'Rejected')
+                            }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <button *ngIf="response?.show_button" mat-icon-button color="primary" matTooltip="Edit"
+                                (click)="editDeclaration(row)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="taxSavingDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: taxSavingDisplayedColumns;"></mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="taxSavings?.data?.length === 0">No Tax saving list</div>
+                <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+            </mat-card-content>
+        </mat-card>
+        <mat-card>
+            <mat-card-title>House Property</mat-card-title>
+            <mat-card-content>
+                <div class="m-12" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+                    <button *ngIf="response?.show_button" mat-raised-button class="mb-8" color="primary"
+                        (click)="addHouseRent()">
+                        Add House Rent
+                    </button>
+                </div>
+                <mat-table [dataSource]="houseRent">
+                    <ng-container matColumnDef="rent">
+                        <mat-header-cell *matHeaderCellDef> Rent </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="rent"> {{toFloat(row?.rent) | currency : 'INR':
+                            'symbol'}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="from_year_month">
+                        <mat-header-cell *matHeaderCellDef> From Year Month </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="from_year_month"> {{row?.from_year_month | date}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="to_year_month">
+                        <mat-header-cell *matHeaderCellDef> To Year Month </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="to_year_month"> {{row?.to_year_month | date}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="city">
+                        <mat-header-cell *matHeaderCellDef> City </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="city"> {{row?.city}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="financial_year">
+                        <mat-header-cell *matHeaderCellDef> Finacial Year </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="financial_year"> {{row?.financial_year}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="users_house_rent_docs_records">
+                        <mat-header-cell *matHeaderCellDef> Documents </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="users_house_rent_docs_records">
+                            <ng-container *ngFor="let document of row.users_house_rent_docs_records">
+                                <button mat-icon-button (click)="viewDocument(document?.doc_url)">
+                                    <mat-icon>attach_file </mat-icon>
+                                </button>
+                            </ng-container>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="houseRentDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: houseRentDisplayedColumns;"></mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="houseRent?.data?.length === 0">No House Rent list</div>
+                <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+            </mat-card-content>
+
+
+        </mat-card>
+        <mat-card>
+            <mat-card-content>
+                <mat-table [dataSource]="taxSavingOptions">
+                    <ng-container matColumnDef="option_name">
+                        <mat-header-cell *matHeaderCellDef> Section </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="option_name"> {{row?.option_name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="description">
+                        <mat-header-cell *matHeaderCellDef>Deduction Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="description"> {{row?.description}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="max_limit">
+                        <mat-header-cell *matHeaderCellDef>Max Limit</mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="max_limit"> {{toFloat(row?.max_limit) | currency :
+                            'INR' : 'symbol'}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="taxSavingOptionsDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: taxSavingOptionsDisplayedColumns;"></mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="taxSavingOptions?.data?.length === 0">No Tax declaration list</div>
+            </mat-card-content>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

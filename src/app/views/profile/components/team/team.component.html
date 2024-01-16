@@ -1,0 +1,173 @@
+<div fxLayout="row wrap" fxLayoutAlign="space-around">
+    <mat-card fxFlex="100" fxFlex.gt-sm="45" fxFlex.sm="45"
+        [@animate]="{ value: '*', params: { y: '500px', delay: '800ms' } }">
+        <mat-card-title class="mb-16">
+            <div class="card-title-text">
+                <span class="text-13">Who is off today</span>
+                <span fxFlex></span>
+            </div>
+            <mat-divider></mat-divider>
+        </mat-card-title>
+        <mat-card-content class="p-0">
+            <div fxLayout="row wrap">
+                <div *ngFor="let each of response?.on_leave">
+                    <a href="" class="toolbar-avatar md mr-16"><img src="assets/images/avatars/user.svg" alt=""></a>
+                    <div>{{ each.name }}</div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+    <mat-card fxFlex="100" fxFlex.gt-sm="45" fxFlex.sm="45"
+        [@animate]="{ value: '*', params: { y: '500px', delay: '800ms' } }">
+        <mat-card-title class="mb-16">
+            <div class="card-title-text">
+                <span class="text-13">Not in yet today</span>
+                <span fxFlex></span>
+            </div>
+            <mat-divider></mat-divider>
+        </mat-card-title>
+        <mat-card-content class="p-0">
+            <div fxLayout="row wrap">
+                <div *ngFor="let each of response?.absent">
+                    <img class="toolbar-avatar md mr-16" src="assets/images/avatars/user.svg" alt="">
+                    <div>{{ each.name }}</div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div fxLayout="row wrap" fxLayoutAlign="space-around">
+    <mat-card class="ml-0" [@animate]="{ value: '*', params: { y: '500px', delay: '800ms' } }">
+        <mat-card-title class="mb-16">
+            <div class="card-title-text">
+                <span class="text-13"> Employees On Time today </span>
+                <span fxFlex></span>
+            </div>
+        </mat-card-title>
+        <mat-card-content class="p-0">
+            <div>
+                {{ response?.on_time_arrival?.length }}
+            </div>
+        </mat-card-content>
+
+    </mat-card>
+
+    <mat-card [@animate]="{ value: '*', params: { y: '500px', delay: '800ms' } }">
+        <mat-card-title class="mb-16">
+            <div class="card-title-text">
+                <span class="text-13"> Late Arrivals today</span>
+                <span fxFlex></span>
+            </div>
+        </mat-card-title>
+        <mat-card-content class="p-0">
+            <div>
+                <span class="pr-16">{{ response?.late_arrival?.length }}</span>
+                <a class="view-employee-btn" *ngIf="response?.late_arrival?.length"
+                    (click)="viewEmployeesList(response?.late_arrival)">View Employees</a>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card [@animate]="{ value: '*', params: { y: '500px', delay: '800ms' } }">
+        <mat-card-title class="mb-16">
+            <div class="card-title-text">
+                <span class="text-13"> Work from home</span>
+                <span fxFlex></span>
+            </div>
+        </mat-card-title>
+        <mat-card-content class="p-0">
+            <div>
+                {{ response?.work_from_home?.length }}
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card class="mr-0" [@animate]="{ value: '*', params: { y: '500px', delay: '800ms' } }">
+        <mat-card-title class="mb-16">
+            <div class="card-title-text">
+                <span class="text-13"> On Duty Today</span>
+                <span fxFlex></span>
+            </div>
+        </mat-card-title>
+        <mat-card-content class="p-0">
+            <div>
+                <span class="pr-16">{{ response?.on_duty?.length }}</span>
+                <a class="view-employee-btn" *ngIf="response?.on_duty?.length"
+                    (click)="viewEmployeesList(response?.on_duty)">View Employees</a>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
+
+<div fxLayout="row wrap">
+    <mat-card class="ml-24 mr-24" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100" *ngIf="response?.time_sheet.length">
+        <mat-card-content>
+            <table class="mat-table full-width">
+                <thead>
+                    <tr class="mat-header-row">
+                        <th class="mat-header-cell text-left">
+                            <button mat-icon-button (click)="goToNextOrPreviousMonth('previous')">
+                                <mat-icon>navigate_before</mat-icon>
+                            </button>
+                            <span>{{ attendanceDate | date: 'MMM yyyy'}}</span>
+                            <button mat-icon-button (click)="goToNextOrPreviousMonth('next')">
+                                <mat-icon>navigate_next</mat-icon>
+                            </button>
+                        </th>
+                        <th class="mat-header-cell pl-3 text-left" *ngFor="let day of timesheet[0]?.time_sheet">
+                            {{ day.attendence_date | date: 'dd'}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="mat-row" *ngFor="let eachUser of timesheet; let isEven = even;">
+                        <td class="mat-cell font-weight-bold">
+                            {{ eachUser.name }}
+                        </td>
+                        <ng-container *ngFor="let day of eachUser?.time_sheet;">
+                            <td class="mat-cell attendance-circle"[style.background-color]="!isEven && day?.color === '#ffffff'? '#CCCCCC':  day?.color"
+                                [matTooltip]="day.status">
+                                <a *ngIf="day.attendence === 'A'; else elseNotAbsent;" class="anchor-tag text-decoration-underline"
+                                    (click)="updateAttendance(eachUser, day)">
+                                    {{ day.attendence }}
+                                </a>
+                                <ng-template #elseNotAbsent>
+                                    {{ day.attendence }}
+                                </ng-template>                            
+                            </td>
+                        </ng-container>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-card-content> 
+    </mat-card>
+</div>
+
+<div class="card-title-text pl-24" *ngIf="response?.user_team?.length">
+    Peers({{ response?.user_team?.length }})
+</div>
+
+<div fxLayout="row wrap" *ngIf="response?.user_team?.length" class="pl-12">
+    <div *ngFor="let eachItem of response?.user_team">
+        <mat-card [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-content>
+                <div>
+                    <img src="assets/images/avatars/user.svg" class="toolbar-avatar sm mr-16 mat-elevation-z1" alt="">
+                    <span class="text-12">
+                        <div class="font-weight-bold">
+                            {{ eachItem?.name}}
+                        </div>
+                        <div>
+                            Email: {{ eachItem?.email}}
+                        </div>
+                        <div>
+                            Mobile: {{ eachItem?.phone }}
+                        </div>
+                    </span>
+                    <span fxFlex></span>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

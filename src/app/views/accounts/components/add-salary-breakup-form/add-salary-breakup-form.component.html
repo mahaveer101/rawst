@@ -1,0 +1,176 @@
+<form [formGroup]="salaryBreakupForm">
+
+    <div mat-dialog-title class="dialog-title">
+        Create Salary Breakup
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input type="text"
+                    placeholder="Select user"
+                    aria-label="User"
+                    matInput
+                    formControlName="user"
+                    [matAutocomplete]="userAutocomplete">
+                    <mat-icon matSuffix>arrow_drop_down</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #userAutocomplete="matAutocomplete"
+                    [displayWith]="displayFn">
+                    <mat-option *ngFor="let each of filteredUsers | async" [value]="each">
+                        {{ each.name }} - {{each.emp_no}}
+                    </mat-option>
+                </mat-autocomplete>
+                <mat-error>User is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="beneficiaryAcNo" matInput placeholder="Beneficiary Account number">
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('beneficiaryAcNo').hasError('required') && salaryBreakupForm.get('beneficiaryAcNo').touched">
+                    beneficiary Ac No is required
+                </mat-error>
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('beneficiaryAcNo').hasError('pattern') && !salaryBreakupForm.get('beneficiaryAcNo').hasError('required')">
+                    Please Enter digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="beneficiaryName" matInput placeholder="Beneficiary Name">
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('beneficiaryName').hasError('required') && salaryBreakupForm.get('beneficiaryName').touched">
+                    Beneficiary name is required
+                </mat-error>
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('beneficiaryName').hasError('pattern') && !salaryBreakupForm.get('beneficiaryName').hasError('required')">
+                    Please Enter digits and alphabets only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="ifscNo" matInput placeholder="IFSC Code">
+                <mat-error>IFSC Code is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="bankName" matInput placeholder="Bank name">
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('bankName').hasError('required') && salaryBreakupForm.get('bankName').touched">
+                    Bank name is required
+                </mat-error>
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('bankName').hasError('pattern') && !salaryBreakupForm.get('bankName').hasError('required')">
+                    Please Enter digits and alphabets only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="basic" matInput placeholder="Basic" (change)="calculatePf(); calculateESIC()">
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('basic').hasError('required') && salaryBreakupForm.get('basic').touched">
+                    Basic is required
+                </mat-error>
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('basic').hasError('pattern') && !salaryBreakupForm.get('basic').hasError('required')">
+                    Please Enter digits and alphabets only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="hra" matInput placeholder="HRA" (change)="calculateESIC()">
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('hra').hasError('required') && salaryBreakupForm.get('hra').touched">
+                    HRA is required
+                </mat-error>
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('hra').hasError('pattern') && !salaryBreakupForm.get('hra').hasError('required')">
+                    Please Enter digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="conveyance" matInput placeholder="Conveyance" (change)="calculateESIC()">
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('conveyance').hasError('required') && salaryBreakupForm.get('conveyance').touched">
+                    Conveyance is required
+                </mat-error>
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('conveyance').hasError('pattern') && !salaryBreakupForm.get('conveyance').hasError('required')">
+                    Please Enter digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="other" matInput placeholder="Other" (change)="calculateESIC()">
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('other').hasError('required') && salaryBreakupForm.get('other').touched">
+                    Other is required
+                </mat-error>
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('other').hasError('pattern') && !salaryBreakupForm.get('other').hasError('required')">
+                    Please Enter digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+             <mat-slide-toggle formControlName="pfStatus">PF</mat-slide-toggle>
+        </div>
+
+        <div class="pb-16" *ngIf="salaryBreakupForm.get('pfStatus').value === true">
+            <mat-form-field class="full-width">
+                <input formControlName="pf" matInput placeholder="PF" [readonly]="true">
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="esic" matInput placeholder="ESIC" [readonly]="true">
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="lwf" matInput placeholder="LWF">
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('lwf').hasError('required') && salaryBreakupForm.get('lwf').touched">
+                    LWF is required
+                </mat-error>
+                <mat-error
+                    *ngIf="salaryBreakupForm.get('lwf').hasError('pattern') && !salaryBreakupForm.get('lwf').hasError('required')">
+                    Please Enter digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="salaryBreakupForm.invalid"
+                (click)="onSubmitSalaryBreakupFrom()">Submit
+            </button>
+        </div>
+    </div>
+</form>

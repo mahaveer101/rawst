@@ -1,0 +1,328 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="40" fxFlex.sm="100">
+        <mat-card class="user-card p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <a href="" class="toolbar-avatar md mr-16">
+                        <img [src]="companyDetails.logo" alt=""></a>
+                    <span class="text-18">{{companyDetails?.company_name}}</span>
+                    <span fxFlex></span>
+                    <button mat-icon-button [matMenuTriggerFor]="companyMenu" class="">
+                        <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #companyMenu="matMenu">
+                        <button mat-menu-item (click)="editCompany()">Edit</button>
+                        <button mat-menu-item (click)="editCompanyLogo()">Edit Logo</button>
+                        <button mat-menu-item (click)="deleteConfirmation(deleteLogo)">Delete Logo</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <div class="user-details">
+                    <p><mat-icon class="text-muted text-20"> phone </mat-icon>{{companyDetails?.contact_number}}</p>
+                    <p><mat-icon class="text-muted text-20"> email </mat-icon>{{companyDetails.email}}</p>
+                    <p><mat-icon class="text-muted text-20"> location_on </mat-icon>{{companyDetails.city}}</p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title>
+                <div class="card-title-text table-bottom">
+                    <span class="text-18">Grades</span>
+                    <span fxFlex></span>
+                    <button mat-icon-button [matMenuTriggerFor]="gradeTypeMenu" class="">
+                        <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #gradeTypeMenu="matMenu">
+                        <button mat-menu-item (click)="editGradeTypes()">Edit</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content class="p-0">
+                <mat-table [dataSource]="companyGrade">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="name" [matTooltip]="row?.name"> {{row?.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="percentage">
+                        <mat-header-cell *matHeaderCellDef> Percentage </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="percentage" [matTooltip]="row?.percentage">
+                            {{row?.percentage}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedGradeColumn"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedGradeColumn;"></mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="companyGrade.data.length === 0">No Grades list</div>
+            </mat-card-content>
+        </mat-card>
+
+
+        <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title>
+                <div class="card-title-text table-bottom">
+                    <span class="text-18">Leave Type</span>
+                    <span fxFlex></span>
+                    <button mat-icon-button [matMenuTriggerFor]="leaveTypeMenu" class="">
+                        <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #leaveTypeMenu="matMenu">
+                        <button mat-menu-item (click)="editLeaveTypes()">Edit</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+
+            <mat-card-content class="p-0">
+                <mat-table [dataSource]="companyLeaves">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="name" [matTooltip]="row?.name"> {{row?.name}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="quota">
+                        <mat-header-cell *matHeaderCellDef> Quota </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="quota" [matTooltip]="row?.quota"> {{row?.quota}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedLeaveColumn"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedLeaveColumn;"></mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="companyLeaves.data.length === 0">No Leave List</div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title>
+                <div class="card-title-text table-bottom">
+                    <span class="text-18">Working Hours</span>
+                    <span fxFlex></span>
+                    <button mat-icon-button [matMenuTriggerFor]="workingHoursMenu" class="">
+                        <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #workingHoursMenu="matMenu">
+                        <button mat-menu-item (click)="editWorkingHours()">Edit</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+
+            <mat-card-content class="p-0">
+                <mat-table [dataSource]="companyWorkingHoursSettings">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="name" [matTooltip]="row?.name"> {{row?.name}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="value">
+                        <mat-header-cell *matHeaderCellDef> Hours </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="value" [matTooltip]="row?.value"> {{row?.value}}
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedWorkingHoursSettings"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedWorkingHoursSettings"></mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="companyWorkingHoursSettings.data.length === 0">No Working Hours </div>
+            </mat-card-content>
+
+        </mat-card>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-sm="60" fxFlex.sm="100">
+        <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title>
+                <div class="card-title-text table-bottom">
+                    <span class="text-18">Holiday Calender</span>
+                    <span fxFlex></span>
+                    <button mat-icon-button [matMenuTriggerFor]="holidayCalenderMenu" class="">
+                        <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #holidayCalenderMenu="matMenu">
+                        <button mat-menu-item (click)="addOrUpdateHoliday('add')">Add</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content class="p-0">
+                <mat-table [dataSource]="companyHolidayCalender">
+
+                    <ng-container matColumnDef="year_period">
+                        <mat-header-cell *matHeaderCellDef> Year Period </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="year_period" [matTooltip]="row?.year_period">
+                            {{row?.year_period}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="holiday_name">
+                        <mat-header-cell *matHeaderCellDef> Holiday Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="holiday_name" [matTooltip]="row?.holiday_name">
+                            {{row?.holiday_name}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="holiday_date">
+                        <mat-header-cell *matHeaderCellDef> Holiday Date </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="holiday_date">
+                            {{row?.holiday_date | date}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>
+                            Actions
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <button mat-icon-button color="primary" matTooltip="Edit"
+                                (click)="addOrUpdateHoliday('edit', row)">
+                                <mat-icon>edit</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedHolidayColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedHolidayColumns"></mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="companyHolidayCalender.data.length === 0">No Holiday List</div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="user-card p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-18">Payroll</span>
+                    <span fxFlex></span>
+                    <button mat-icon-button [matMenuTriggerFor]="payrollMenu" class="">
+                        <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #payrollMenu="matMenu">
+                        <button mat-menu-item (click)="editPayroll()">Edit</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <div class="user-details">
+                    <p><mat-icon class="text-muted text-20">date_range</mat-icon> Start Date {{
+                        payrollSettings?.monthly_cycle?.start_date }}{{
+                        getDateSuffix(payrollSettings?.monthly_cycle?.start_date) }} of every month</p>
+                    <p><mat-icon class="text-muted text-20">date_range</mat-icon>End Date {{
+                        payrollSettings?.monthly_cycle?.end_date }}{{
+                        getDateSuffix(payrollSettings?.monthly_cycle?.end_date) }} of every month</p>
+                    <p><mat-icon class="text-muted text-20">money</mat-icon>Attendance Allowance {{
+                        payrollSettings?.attendance_allowance }}</p>
+                    <p><mat-icon class="text-muted text-20">schedule</mat-icon> Overtime Percentage {{
+                        payrollSettings?.over_time_percentage }}%</p>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="user-card p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-18">Tax Settings</span>
+                    <span fxFlex></span>
+                    <button mat-icon-button [matMenuTriggerFor]="companyTaxMenu">
+                        <mat-icon class="text-18 text-muted">more_vert</mat-icon>
+                    </button>
+                    <mat-menu #companyTaxMenu="matMenu">
+                        <button mat-menu-item (click)="editCompanyTax()">Edit</button>
+                    </mat-menu>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <div class="user-details">
+                    <p>Start Date: {{ taxSettings?.declaration?.start_date | date }}</p>
+                    <p>End Date: {{ taxSettings?.declaration?.end_date | date }}</p>
+                    <p>Standard Deduction: {{ toFloat(taxSettings?.standard_deduction) | currency:'INR' : 'symbol'}}</p>
+                    <p>Surcharge Percentage: {{ taxSettings?.surcharges_percentage }}%</p>
+                </div>
+
+                <div>
+                    <mat-tab-group>
+                        <mat-tab label="New Resime">
+                            <mat-card class="p-0 m-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+                                <mat-card-content class="p-0">
+                                    <mat-table [dataSource]="taxSettings.new_regime">
+                                        <ng-container matColumnDef="flat">
+                                            <mat-header-cell *matHeaderCellDef> Flat</mat-header-cell>
+                                            <mat-cell *matCellDef="let row" data-label="flat"> {{toFloat(row?.flat) | currency: 'INR': 'symbol' }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="percentage">
+                                            <mat-header-cell *matHeaderCellDef> Percentage</mat-header-cell>
+                                            <mat-cell *matCellDef="let row" data-label="flat"> {{row?.percentage }}%
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="end">
+                                            <mat-header-cell *matHeaderCellDef> End </mat-header-cell>
+                                            <mat-cell *matCellDef="let row" data-label="end"> {{toFloat(row?.slab?.end) | currency: 'INR': 'symbol'  }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="start">
+                                            <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
+                                            <mat-cell *matCellDef="let row" data-label="start"> {{toFloat(row?.slab?.start) | currency: 'INR': 'symbol'  }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row *matHeaderRowDef="displayedTaxSettingsColumn"></mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedTaxSettingsColumn"></mat-row>
+                                    </mat-table>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-tab>
+
+                        <mat-tab label="Old Resime">
+                            <mat-card class="p-0 m-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+                                <mat-card-content class="p-0">
+                                    <mat-table [dataSource]="taxSettings.old_regime">
+                                        <ng-container matColumnDef="flat">
+                                            <mat-header-cell *matHeaderCellDef> Flat</mat-header-cell>
+                                            <mat-cell *matCellDef="let row" data-label="flat"> {{toFloat(row?.flat) | currency: 'INR': 'symbol'  }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="percentage">
+                                            <mat-header-cell *matHeaderCellDef> Percentage</mat-header-cell>
+                                            <mat-cell *matCellDef="let row" data-label="flat"> {{row?.percentage}}%
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="end">
+                                            <mat-header-cell *matHeaderCellDef> End </mat-header-cell>
+                                            <mat-cell *matCellDef="let row" data-label="end"> {{toFloat(row?.slab?.end) | currency: 'INR': 'symbol'  }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <ng-container matColumnDef="start">
+                                            <mat-header-cell *matHeaderCellDef> Start</mat-header-cell>
+                                            <mat-cell *matCellDef="let row" data-label="start"> {{toFloat(row?.slab?.start) | currency: 'INR': 'symbol'  }}
+                                            </mat-cell>
+                                        </ng-container>
+
+                                        <mat-header-row *matHeaderRowDef="displayedTaxSettingsColumn"></mat-header-row>
+                                        <mat-row *matRowDef="let row; columns: displayedTaxSettingsColumn"></mat-row>
+                                    </mat-table>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<ng-template #deleteLogo>
+    <h2 matDialogTitle>Are you sure Delete Logo</h2>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>

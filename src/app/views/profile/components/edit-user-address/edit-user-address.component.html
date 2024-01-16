@@ -1,0 +1,63 @@
+<form [formGroup]="userAddressForm">
+    <div mat-dialog-title class="dialog-title">
+        User Profile
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content class="userProfile-form-content">
+        <div>
+            <mat-form-field class="full-width">
+                <input formControlName="street_address" matInput placeholder="Street Address">
+                <mat-error>Street Address is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field class="full-width">
+                <input formControlName="city" matInput placeholder="City">
+                <mat-error>City is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field class="full-width">
+                <input formControlName="state" matInput placeholder="State">
+                <mat-error>State is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field class="full-width">
+                <input formControlName="country" matInput placeholder="Country">
+                <mat-error>Country is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-form-field class="full-width">
+                <input formControlName="pincode" matInput placeholder="pincode">
+                <mat-error *ngIf="userAddressForm.get('pincode').hasError('required')">
+                    Pincode is required
+                </mat-error>
+                <mat-error
+                    *ngIf="userAddressForm.get('pincode').hasError('pincode') && !userAddressForm.get('phone').hasError('required')">
+                    Please Enter 6 digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div>
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary"
+                [disabled]="userAddressForm.invalid"
+             (click)="onSubmitUserAddressForm()"> Submit
+            </button>
+        </div>
+    </div>
+</form>

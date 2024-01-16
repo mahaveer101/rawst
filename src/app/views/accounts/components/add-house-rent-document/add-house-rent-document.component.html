@@ -1,0 +1,39 @@
+<mat-card>
+    <div mat-dialog-title class="dialog-title">
+        Update Document
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <mat-card-content>
+        <div>
+            <div class="pb-16">
+                <button (click)="fileInput.click()" mat-raised-button color="primary">
+                    Select Files
+                    <mat-icon> attach_file</mat-icon>
+                </button>
+                <input style="display:none" #attachments type="file" (change)="onfileChanged($event)" #fileInput
+                    multiple="true" accept=".pdf, .png, .jpg, .jpeg, .doc, .docx" />
+    
+                <div *ngFor="let selected of listOfFiles; let index">
+                    {{ selected }}
+                    <button mat-icon-button (click)="removeSelectedFile(index)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="pb-16">
+                <mat-error *ngIf="errorMessage"> {{ errorMessagePartA }}</mat-error>
+            </div>
+
+            <div mat-dialog-actions>
+                <button mat-raised-button color="primary" [disabled]="fileList.length === 0"
+                    (click)="submitDocumentUploadForm()">Submit
+                </button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

@@ -1,0 +1,166 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="30" fxFlex.sm="100"
+        [@animate]="{ value: '*', params: { y: '50px', delay: '800ms' } }">
+        <mat-card class="p-16">
+            <div mat-dialog-title class="dialog-title">
+                Add Assets
+            </div>
+            <div mat-dialog-content class="mat-dialog-content">
+                <form [formGroup]="assetsForm">
+                    <div class="pb-16">
+                        <mat-form-field class="full-width">
+                            <mat-select name="userId" formControlName="user_id" placeholder="User">
+                                <mat-option *ngFor="let each of users" [value]="each.id"> {{ each.name }} </mat-option>
+                            </mat-select>
+                            <mat-error>User is required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="pb-10">
+                        <mat-form-field class="full-width">
+                            <input formControlName="asset_name" matInput placeholder="Asset name">
+                            <mat-error
+                                *ngIf="assetsForm.get('asset_name').hasError('required') && assetsForm.get('asset_name').touched">
+                                Asset name is required
+                            </mat-error>
+                            <mat-error
+                                *ngIf="assetsForm.get('asset_name').hasError('pattern') && !assetsForm.get('asset_name').hasError('required')">
+                                Please Enter digits and alphabets only
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="pb-10">
+                        <mat-form-field class="full-width">
+                            <input formControlName="asset_code" matInput placeholder="Asset code">
+                            <mat-error
+                                *ngIf="assetsForm.get('asset_code').hasError('required') && assetsForm.get('asset_code').touched">
+                                Asset code is required
+                            </mat-error>
+                            <mat-error
+                                *ngIf="assetsForm.get('asset_code').hasError('pattern') && !assetsForm.get('asset_code').hasError('required')">
+                                Please Enter digits and alphabets only
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="pb-10">
+                        <mat-form-field class="full-width">
+                            <input formControlName="location" matInput placeholder="Location">
+                            <mat-error
+                                *ngIf="assetsForm.get('location').hasError('required') && assetsForm.get('location').touched">
+                                Location is required
+                            </mat-error>
+                            <mat-error
+                                *ngIf="assetsForm.get('location').hasError('pattern') && !assetsForm.get('location').hasError('required')">
+                                Please Enter digits and alphabets only
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="pb-10">
+                        <mat-form-field class="full-width">
+                            <mat-select name="category" formControlName="category" placeholder="Category">
+                                <mat-option value="Hardware"> Hardware </mat-option>
+                                <mat-option value="Software"> Software </mat-option>
+                            </mat-select>
+                            <mat-error>Category is required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="pb-10">
+                        <mat-form-field class="full-width">
+                            <input formControlName="asset_type" matInput placeholder="Asset Type">
+                            <mat-error>Asset Type is required</mat-error>
+                            <mat-error
+                                *ngIf="assetsForm.controls['asset_type'].hasError('required') && assetsForm.controls['asset_type'].touched">
+                                Reason is required
+                            </mat-error>
+                            <mat-error
+                                *ngIf="assetsForm.get('asset_type').hasError('pattern') && !assetsForm.get('asset_type').hasError('required')">
+                                Please Enter digits and alphabets only
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="pb-10">
+                        <mat-form-field class="full-width">
+                            <mat-select name="condition" formControlName="condition" placeholder="Condition">
+                                <mat-option value="New"> New </mat-option>
+                                <mat-option value="Old"> Old </mat-option>
+                            </mat-select>
+                            <mat-error>Condition is required</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="pb-10">
+                        <button type="button" (click)="fileInput.click()" mat-raised-button>
+                            Select Files
+                            <mat-icon>attach_file </mat-icon>
+                        </button>
+                        <input style="display:none" #attachments type="file" (change)="onfileChanged($event)" #fileInput
+                            multiple="true" accept=".pdf, .png, .jpg, .jpeg, .doc, .docx" />
+                    </div>
+
+                    <div *ngFor="let selected of listOfFiles; let index">
+                        {{ selected }}
+                        <button mat-icon-button (click)="removeSelectedFile(index)">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+
+                    <div class="pb-16">
+                        <mat-error *ngIf="errorMessage"> {{errorMessage }}</mat-error>
+                    </div>
+                    <button mat-raised-button type="button" class="add-asset-btn" [disabled]="assetsForm.invalid"
+                        color="primary" align="end" (click)="saveNewAsset()">Add Asset</button>
+                </form>
+            </div>
+        </mat-card>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-sm="70" fxFlex.sm="100">
+        <mat-card class="p-0">
+            <mat-card-content label="Assets">
+                <mat-table [dataSource]="assetsList">
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="name" [matTooltip]="row.name"> {{row.name}}
+                        </mat-cell>
+                    </ng-container>
+
+
+                    <ng-container matColumnDef="email">
+                        <mat-header-cell class="display-table-cell" *matHeaderCellDef> Email </mat-header-cell>
+                        <mat-cell class="display-table-cell" *matCellDef="let row" data-label="status"
+                            [matTooltip]="row.email"> {{row.email}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="phone">
+                        <mat-header-cell *matHeaderCellDef> Phone </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="phone" [matTooltip]="row.phone"> {{row.phone}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef width="10px">
+                            Actions
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <button mat-icon-button matTooltip="View" (click)="viewAssetsDetails(row.id)">
+                                <mat-icon>remove_red_eye</mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <div class="p-10" *ngIf="assetsList?.data.length === 0">No assets List</div>
+                <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

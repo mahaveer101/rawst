@@ -1,0 +1,462 @@
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="30" fxFlex.sm="50"
+        [@animate]="{ value: '*', params: { y: '50px', delay: '800ms' } }">
+
+        <mat-card class="p-0">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-13">Leaves Quota</span>
+                    <span fxFlex></span>
+                </div>
+            </mat-card-title>
+
+            <mat-card-content>
+                <div class="mb-16">
+                    <p class="m-0">
+                        Casual
+                        <span class="text-muted">| {{ leavesQuota?.casual_leave?.remaining }} | {{
+                            getPercentage(leavesQuota?.casual_leave?.remaining,
+                            leavesQuota?.casual_leave?.total)}}%</span>
+                    </p>
+
+                    <mat-progress-bar color="primary" mode="determinate"
+                        [value]="getPercentage(leavesQuota?.casual_leave?.remaining, leavesQuota?.casual_leave?.total)"
+                        class="rounded" style="height: 6px">
+                    </mat-progress-bar>
+                </div>
+
+                <div class="mb-16">
+                    <p class="m-0 text-13">
+                        Sick <span class="text-muted">| {{ leavesQuota?.sick_leave?.remaining }} | {{
+                            getPercentage(leavesQuota?.sick_leave?.remaining, leavesQuota?.sick_leave?.total)}}%</span>
+                    </p>
+                    <mat-progress-bar color="accent" mode="determinate"
+                        [value]="getPercentage(leavesQuota?.sick_leave?.remaining, leavesQuota?.sick_leave?.total)"
+                        class="rounded" style="height: 6px">
+                    </mat-progress-bar>
+                </div>
+
+                <div class="mb-16">
+                    <p class="m-0 text-13">
+                        Earned <span class="text-muted">| {{ leavesQuota?.earned_leave?.remaining }} | {{
+                            getPercentage(leavesQuota?.earned_leave?.remaining,
+                            leavesQuota?.earned_leave?.total)}}%</span>
+                    </p>
+                    <mat-progress-bar class="green-progress rounded" color="" mode="determinate"
+                        [value]="getPercentage(leavesQuota?.earned_leave?.remaining, leavesQuota?.earned_leave?.total)"
+                        style="height: 6px">
+                    </mat-progress-bar>
+                </div>
+
+                <div class="mb-16">
+                    <p class="m-0">
+                        Short Leave
+                        <span class="text-muted">| {{ leavesQuota?.short_leave?.remaining }} | {{
+                            getPercentage(leavesQuota?.short_leave?.remaining,
+                            leavesQuota?.short_leave?.total)}}%</span>
+                    </p>
+
+                    <mat-progress-bar class="yellow-progress rounded" color="" mode="determinate"
+                        [value]="getPercentage(leavesQuota?.short_leave?.remaining, leavesQuota?.short_leave?.total)"
+                        style="height: 6px">
+                    </mat-progress-bar>
+                </div>
+
+                <div class="mb-16">
+                    <p class="m-0 text-13">
+                        Comp Off <span class="text-muted">| {{ leavesQuota?.comp_off?.remaining }} | {{
+                            getPercentage(leavesQuota?.comp_off?.remaining,
+                            leavesQuota?.comp_off?.total)}}%</span>
+                    </p>
+                    <mat-progress-bar class="blue-progress rounded" color="" mode="determinate"
+                        [value]="getPercentage(leavesQuota?.comp_off?.remaining, leavesQuota?.comp_off?.total)"
+                        style="height: 6px">
+                    </mat-progress-bar>
+                </div>
+                <button mat-raised-button color="primary" (click)="openLeaveApplicationForm()">Apply Leave</button>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="p-0">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-13">Team Members</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+
+            <mat-card-content>
+                <mat-table [dataSource]="teamMembers">
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell class="pr-12" *matHeaderCellDef>
+                            Name
+                        </mat-header-cell>
+                        <mat-cell class="pr-12" *matCellDef="let row" data-label="name">
+                            {{ row.name }}
+                            <mat-icon class="info-icon" matTooltipClass="material-tooltip"
+                                [matTooltip]="row.email + '\n' + row.phone">info_outline</mat-icon>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container   matColumnDef="status">
+                        <mat-header-cell class="status" *matHeaderCellDef>
+                            Status
+                        </mat-header-cell>
+                        <mat-cell class="status" *matCellDef="let row" data-label="status">
+                            {{ row.status }}
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="[
+                        'name',
+                        'status'
+                    ]"></mat-header-row>
+                    <mat-row *matRowDef="
+                        let row;
+                        columns: [
+                            'name',
+                            'status'
+                        ]
+                    ">
+                    </mat-row>
+                </mat-table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+
+    <div fxFlex="100" fxFlex.gt-sm="70" fxFlex.sm="100">
+
+        <mat-card class="p-0">
+            <mat-tab-group>
+                <mat-tab label="Applied Leaves" >
+                    <mat-card-content>
+                        <mat-table [dataSource]="appliedLeaves">
+                            <ng-container matColumnDef="leave_type">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Leave Type
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="leaveType">
+                                    {{ row.leave_type }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="reason">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Reason
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="reason">
+                                    {{ (row?.status === '2' || row?.status === '3')? row.rejection_reason :row.reason }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="from_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    From Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="fromDate">
+                                    {{ row.from_date | date }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="to_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    To Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="toDate">
+                                    {{ row.to_date | date }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="status_name">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Status
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="status">
+                                    <span [ngClass]="row?.status === '0'? 'text-red': row?.status === '1'? 'text-green': row?.status === '2' ? 'text-orange': ''">
+                                        {{ (row.status_name | titlecase) || (row.status === '0'? 'Pending': row?.status === '1'? 'Approved': 'Rejected') }}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Action
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="action">
+                                    <button *ngIf="row.status === '0'" mat-icon-button matTooltip="Cancel" (click)="cancelLeave(row.id, cancelConfirmation)">
+                                        <mat-icon>close</mat-icon>
+                                      </button>
+                                </mat-cell>
+                            </ng-container>
+    
+                            <ng-container matColumnDef="name">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Applied To
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="name">
+                                    {{ row?.apply_to_user?.name }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="appliedLeavesDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: appliedLeavesDisplayedColumns;">
+                            </mat-row>
+                        </mat-table>
+                        <div class="p-16" *ngIf="appliedLeaves.length === 0">No applied leaves</div>
+                    </mat-card-content>
+                </mat-tab>
+
+                <mat-tab label="Approval Leaves">
+                    <ng-template mat-tab-label>
+                        <div matBadge="{{approvalLeaves?.length}}" matBadgeOverlap="false">Approval Leaves</div>
+                    </ng-template>
+                    <mat-card-content>
+                        <mat-table [dataSource]="approvalLeaves">
+
+                            <ng-container matColumnDef="leave_type">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Leave Type
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="leaveType">
+                                    {{ row.leave_type }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="applied_by">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Applied By
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="applied_by">
+                                    {{ row?.aprrove_for_user?.name }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="reason">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Reason
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="reason">
+                                    {{ row.reason }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="from_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    From Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="fromDate">
+                                    {{ row.from_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="to_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    To Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="toDate">
+                                    {{ row.to_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="status_name">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Status
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="status">
+                                    <span [ngClass]="row?.status === '0'? 'text-red': 'text-green'">
+                                        {{ (row.status_name | titlecase) || (row.status === '0'? 'Pending': 'Approved') }}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Actions
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <button mat-icon-button class="appove-btn"  matTooltip="Approve"
+                                        (click)="openConfirmation(row.id, 'approve', approveConfirmation)">
+                                        <mat-icon>approvals</mat-icon>
+                                    </button>
+                                    <button mat-icon-button matTooltip="Reject" (click)="openConfirmation(row.id, 'reject', rejectConfirmation)"
+                                        color="warn">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef="approvalLeavesDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="
+                                let row;
+                                columns: approvalLeavesDisplayedColumns;
+                            ">
+                            </mat-row>
+                        </mat-table>
+                        <div class="p-16" *ngIf="approvalLeaves.length === 0">No leaves for approval</div>
+                    </mat-card-content>
+                </mat-tab>
+
+                <mat-tab label="Approved Leaves">
+                    <mat-card-content>
+                        <mat-table [dataSource]="approvedLeaves">
+                            <ng-container matColumnDef="leave_type">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Leave Type
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="leaveType">
+                                    {{ row.leave_type }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="applied_by">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Applied By
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="applied_by">
+                                    {{ row?.aprrove_for_user    ?.name }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="reason">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Reason
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="reason">
+                                    {{ row.reason }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="from_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    From Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="fromDate">
+                                    {{ row.from_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="to_date">
+                                <mat-header-cell *matHeaderCellDef>
+                                    To Date
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="toDate">
+                                    {{ row.to_date | date }}
+                                </mat-cell>
+                            </ng-container>
+
+                            <ng-container matColumnDef="status_name">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Status
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row" data-label="status">
+                                    <span [ngClass]="row?.status === '0'? 'text-red': 'text-green'">
+                                        {{ (row.status_name | titlecase) || (row.status === '0'? 'Pending': 'Approved') }}
+                                    </span>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="actions">
+                                <mat-header-cell *matHeaderCellDef>
+                                    Actions
+                                </mat-header-cell>
+                                <mat-cell *matCellDef="let row">
+                                    <button *ngIf="row.status === '1'" mat-icon-button matTooltip="Cancel" (click)="cancelLeave(row.id, cancelConfirmation)">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <mat-header-row *matHeaderRowDef="approvedLeavesDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="
+                                let row;
+                                columns: approvedLeavesDisplayedColumns;
+                            ">
+                            </mat-row>
+                        </mat-table>
+                        <div class="p-16" *ngIf="approvedLeaves.length === 0">No leaves for approved</div>
+                    </mat-card-content>
+                </mat-tab>
+
+            </mat-tab-group>
+        </mat-card>
+
+        <mat-card class="p-0">
+            <mat-card-title class="mb-16">
+                <div class="card-title-text">
+                    <span class="text-13">Holiday's List - {{holidaysPeriod}}</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <mat-table [dataSource]="holidays">
+                    <ng-container matColumnDef="holiday_name">
+                        <mat-header-cell *matHeaderCellDef>
+                            Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="name">
+                            {{ row.holiday_name }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="holiday_date">
+                        <mat-header-cell *matHeaderCellDef>
+                            Date
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="holidayDate">
+                            {{ row.holiday_date | date }}
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="[
+                            'holiday_name',
+                            'holiday_date'
+                        ]"></mat-header-row>
+                    <mat-row *matRowDef="
+                            let row;
+                            columns: [
+                            'holiday_name',
+                            'holiday_date'
+                            ]
+                        ">
+                    </mat-row>
+                </mat-table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+</div>
+
+<ng-template #approveConfirmation>
+    <h2 matDialogTitle>Are you sure you want to approve?</h2>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary"  matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #rejectConfirmation>
+    <h2 matDialogTitle>Are you sure you want to reject?</h2>
+    <div class="pb-16">
+        <mat-form-field class="full-width">
+            <mat-label>Reason</mat-label>
+            <textarea matInput required [(ngModel)]="rejectionReason" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+    </div>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes" [disabled]="!!!rejectionReason">Yes</button>
+    </mat-dialog-actions>
+</ng-template>
+
+<ng-template #cancelConfirmation>
+    <h2 matDialogTitle>Are you sure you want to cancel?</h2>
+    <div class="pb-16">
+        <mat-form-field class="full-width">
+            <mat-label>Reason</mat-label>
+            <textarea matInput required [(ngModel)]="cancelReason" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                cdkAutosizeMinRows="2" cdkAutosizeMaxRows="5"></textarea>
+        </mat-form-field>
+    </div>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary"  matDialogClose="yes" [disabled]="!!!cancelReason">Yes</button>
+    </mat-dialog-actions>
+</ng-template>

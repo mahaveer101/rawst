@@ -1,0 +1,98 @@
+<div mat-dialog-title class="dialog-title">
+    House Rent Details
+    <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div mat-dialog-content>
+    <form [formGroup]="houseRentForm">
+        <div class="pb-10">
+            <mat-form-field class="full-width">
+                <input formControlName="rent" matInput placeholder="Rent">
+                <mat-error
+                    *ngIf="houseRentForm.controls['rent'].hasError('required') && houseRentForm.controls['rent'].touched">
+                    Rent is required
+                </mat-error>
+                <mat-error
+                    *ngIf="houseRentForm.get('rent').hasError('pattern') && !houseRentForm.get('rent').hasError('required')">
+                    Please Enter digits and alphabets only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matInput name="from_year_month" formControlName="from_year_month" placeholder="From Year Month"
+                    [matDatepicker]="fromDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="fromDatepicker"></mat-datepicker-toggle>
+                <mat-error> From Year Month required </mat-error>
+            </mat-form-field>
+            <mat-datepicker #fromDatepicker startView="multi-year"
+                (monthSelected)="setMonthAndYearForFrom($event, fromDatepicker)"
+                panelClass="example-month-picker"></mat-datepicker>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matInput name="to_year_month" formControlName="to_year_month" placeholder="To Year Month"
+                    [matDatepicker]="toDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="toDatepicker"></mat-datepicker-toggle>
+                <mat-error> To Year Month required </mat-error>
+            </mat-form-field>
+            <mat-datepicker #toDatepicker startView="multi-year"
+                (monthSelected)="setMonthAndYearForTo($event, toDatepicker)"
+                panelClass="example-month-picker"></mat-datepicker>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="address" matInput placeholder="address">
+                <mat-error>Address is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="city" matInput placeholder="city">
+                <mat-error>City is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="financial_year" formControlName="financial_year" placeholder="Finacial Year">
+                    <mat-option *ngFor="let each of financialYears" [value]="each"> {{ each }} </mat-option>
+                </mat-select>
+                <mat-error>Finacial year is required</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <button (click)="fileInput.click()" mat-raised-button color="primary">
+                Select Files
+                <mat-icon> attach_file</mat-icon>
+            </button>
+            <input style="display:none" #attachments type="file" (change)="onfileChanged($event)" #fileInput
+                multiple="true" accept=".pdf, .png, .jpg, .jpeg, .doc, .docx" />
+
+            <div *ngFor="let selected of listOfFiles; let index">
+                {{ selected }}
+                <button mat-icon-button (click)="removeSelectedFile(index)">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="houseRentForm.invalid"
+                (click)="onSubmitHouseRentForm()">Submit
+            </button>
+        </div>
+    </form>
+
+</div>

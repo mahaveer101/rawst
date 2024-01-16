@@ -1,0 +1,9 @@
+.mat-row:nth-child(even){
+    .mat-cell {
+        background-color: #CCCCCC;
+    }
+}
+
+th, td {
+    border-right: 1px solid #000;
+}

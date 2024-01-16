@@ -1,0 +1,61 @@
+<form [formGroup]="departmentForm">
+    <div mat-dialog-title class="dialog-title">
+        {{name}} Department
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="departmentName" matInput placeholder="Department Name">
+                <mat-error
+                    *ngIf="departmentForm.get('departmentName').hasError('required') && departmentForm.get('departmentName').touched">
+                    Department name is required
+                </mat-error>
+                <mat-error
+                    *ngIf="departmentForm.get('departmentName').hasError('pattern') && !departmentForm.get('departmentName').hasError('required')">
+                    Please Enter digits and alphabets only
+                </mat-error>
+              </mat-form-field>
+        </div> 
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="workingDays" matInput placeholder="Working Days">
+                <mat-error *ngIf="departmentForm.get('workingDays').hasError('required')">
+                    Working days  is required
+                </mat-error>
+                <mat-error
+                    *ngIf="departmentForm.get('workingDays').hasError('pattern') && !departmentForm.get('workingDays').hasError('required')">
+                    Please enter digits from 1 to 7
+                </mat-error>
+              </mat-form-field>
+        </div> 
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="breakTime" matInput placeholder="Break time">
+                <mat-error *ngIf="departmentForm.get('breakTime').hasError('required')">
+                    Break Time is required
+                </mat-error>
+                <mat-error
+                *ngIf="departmentForm?.get('breakTime')?.invalid && departmentForm?.get('breakTime')?.touched" >
+                    Please enter digits from 1 to 120 
+                </mat-error>
+              </mat-form-field>
+        </div> 
+        <mat-slide-toggle formControlName="showHolidayList" >Show holiday </mat-slide-toggle>
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+        
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary"
+                [disabled]="departmentForm.invalid"
+             (click)="onSubmitDepartmentForm()">Submit
+            </button>
+        </div>
+    </div>
+</form> 

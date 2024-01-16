@@ -1,0 +1,38 @@
+<mat-card>
+    <div mat-dialog-title class="dialog-title">
+        Add Bulk Departments
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <mat-card-content>
+        <div>
+            <button (click)="fileInputBulkEmployes.click()" mat-raised-button color="primary">
+                Bulk Departments
+                <mat-icon>attach_file </mat-icon>
+            </button>
+            <input style="display:none" type="file" (change)="onfileChangedBulkDepartment($event)" #fileInputBulkEmployes
+                accept=".xlsx, .xls" />
+            
+            <div *ngIf="fileNameBulkDepartment">
+                {{ fileNameBulkDepartment }}
+                <button mat-icon-button (click)="removeSelectedFileBulkEmployee()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="pb-16">
+                <mat-error *ngIf="errorMessage"> {{ errorMessagePartA }}</mat-error>
+            </div>
+            
+            <div mat-dialog-actions>
+                <button mat-raised-button color="primary"
+                    [disabled]="!bulkDepartmentForm"
+                 (click)="submitBulkDepartmentForm()">Submit
+                </button>
+            </div>
+        </div>
+    </mat-card-content>
+
+</mat-card>

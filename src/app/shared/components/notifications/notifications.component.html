@@ -1,0 +1,11 @@
+<div class="text-center mat-bg-primary pt-16 pb-16">
+    <h6 class="m-0 text-white">Notifications</h6>
+  </div>
+  <mat-nav-list class="notification-list" role="list">
+    <mat-list-item *ngFor="let n of notifications; let i = index" class="notific-item" role="listitem" routerLinkActive="open">
+        {{ i + 1}}. {{ n.notification }}
+    </mat-list-item>
+  </mat-nav-list>   
+  <div class="text-center mt-16" *ngIf="notifications.length">
+    <small><a class="anchor-tag" (click)="clearAll($event)">Clear all notifications</a></small>
+</div>

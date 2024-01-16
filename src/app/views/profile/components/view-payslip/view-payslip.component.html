@@ -1,0 +1,165 @@
+<div mat-dialog-title class="dialog-title">
+    Payslip {{ payslipDate | date : 'MMM yyyy'}}
+    <button mat-icon-button (click)="downloadPayslip()">
+        <mat-icon>download</mat-icon>
+    </button>
+
+    <mat-form-field class="pl-16">
+        <mat-select name="selectMonth" [(ngModel)]="selectedMonth" (selectionChange)="onChangeMonth($event)" placeholder="Select Month">
+            <mat-option *ngFor="let each of payslipData?.payslip_history" [value]="each.id">
+                {{ each.payroll_month }} - {{ each.payroll_year }}
+            </mat-option>
+        </mat-select>
+        <mat-error>Role Id name is required</mat-error>
+    </mat-form-field>
+
+    <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+
+<div mat-dialog-content>
+    <mat-card>
+        <mat-card-content>
+            <p class="m-4">{{payslipData?.company?.company_name }}</p>
+            <p class="m-4">{{payslipData?.company?.street_address }}</p>
+            <p class="m-4">{{payslipData?.company?.city }}</p>
+            <p class="m-4">{{payslipData?.company?.state }}</p>
+            <p class="m-4">{{payslipData?.company?.country }}</p>
+            <p class="m-4">{{payslipData?.company?.pincode }}</p>
+            <p class="m-4 text-16 font-weight-bold">{{payslipData?.user?.name}}</p>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="25">EMPLOYEE NUMBER<p class="font-weight-bold">{{payslipData?.user?.emp_no}}</p>
+                </div>
+                <div fxFlex.gt-sm="25">DATE JOINED<p class="font-weight-bold"> {{payslipData?.user?.date_joined}} </p>
+                </div>
+                <div fxFlex.gt-sm="25">DEPARTMENT <p class="font-weight-bold"> {{payslipData?.user?.department}} </p>
+                </div>
+                <div fxFlex.gt-sm="25">DESIGNATION <p class="font-weight-bold">{{payslipData?.user?.designation}}</p>
+                </div>
+            </div>
+            <div fxLayout="row wrap">
+                <div fxFlex.gt-sm="25">PAN<p class="font-weight-bold">{{payslipData?.user?.pan_card}} </p>
+                </div>
+                <div fxFlex.gt-sm="25">UAN<p class="font-weight-bold">{{payslipData?.user?.aadhar_card}}</p>
+                </div>
+                <div fxFlex.gt-sm="25">PF NUMBER<p class="font-weight-bold"> </p>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100">
+            <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+                <mat-card-title>
+                    <div class="card-title-text">
+                        <span class="text-12 font-weight-bold">SALARY DETAILS</span>
+                        <span fxFlex></span>
+                    </div>
+                    <mat-divider></mat-divider>
+                </mat-card-title>
+                <mat-card-content class="pb-0">
+                    <div fxLayout="row wrap" >
+                        <div fxFlex.gt-sm="25">ACTUALLY PAYABLE DAYS <p class="font-weight-bold">
+                                {{payslipData?.salary_details?.actual_payable_days}} </p>
+                        </div>
+                        <div fxFlex.gt-sm="25">TOTAL WORKING DAYS<p class="font-weight-bold">
+                                {{payslipData?.salary_details?.total_working_days}}</p>
+                        </div>
+                        <div fxFlex.gt-sm="25">LOSS PF PAY DAYS<p class="font-weight-bold">
+                                {{payslipData?.salary_details?.loss_pay_days}}</p>
+                        </div>
+                        <div fxFlex.gt-sm="25">DAYS PAYABLE<p class="font-weight-bold">
+                                {{payslipData?.salary_details?.days_payable}}</p>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-divider></mat-divider>
+            </mat-card>
+        </div>
+        <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
+            <mat-card [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+                <mat-card-title class="earnings">EARNINGS</mat-card-title>
+                <mat-card-content>
+                    <table class="mat-table full-width">
+                        <tbody>
+                            <tr class="mat-row" *ngFor="let eachItem of payslipData?.earning">
+                                <td class="mat-cell">
+                                    {{ eachItem.name }}
+                                </td>
+                                <td class="mat-cell">
+                                    {{ toFloat(eachItem.amount) | currency : 'INR': 'symbol' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
+            <mat-card [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+                <mat-card-title class="contribution">CONTRIBUTION</mat-card-title>
+                <mat-card-content>
+                    <table class="mat-table full-width">
+                        <tbody>
+                            <tr class="mat-row" *ngFor="let eachItem of payslipData?.contribution">
+                                <td class="mat-cell">
+                                    {{ eachItem.name }}
+                                </td>
+                                <td class="mat-cell">
+                                    {{ toFloat(eachItem.amount) | currency : 'INR': 'symbol' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card-content>
+                <mat-card-title class="taxDeductions">TAX DEDUCTIONS</mat-card-title>
+                <mat-card-content>
+                    <table class="mat-table full-width">
+                        <tbody>
+                            <tr class="mat-row" *ngFor="let eachItem of payslipData?.tax_deduction">
+                                <td class="mat-cell">
+                                    {{ eachItem.name }}
+                                </td>
+                                <td class="mat-cell">
+                                    {{ toFloat(eachItem.amount) | currency : 'INR': 'symbol' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100">
+            <mat-card class="p-0">
+                <mat-card-content class="pb-0">
+                    <div fxLayout="row wrap">
+                        <div fxFlex.gt-sm="33">Arrear <p class="font-weight-bold">
+                                {{ +payslipData?.payroll_extra?.arrear?.amount | currency : 'INR': 'symbol' }} </p>
+                        </div>
+                        <div fxFlex.gt-sm="33">Deduction <p class="font-weight-bold">
+                            {{ +payslipData?.payroll_extra?.deduction?.amount | currency : 'INR': 'symbol' }} </p>
+                        </div>
+                        <div fxFlex.gt-sm="33">Key Performance Incentive <p class="font-weight-bold">
+                            {{ +payslipData?.payroll_extra?.kpi?.amount | currency : 'INR': 'symbol' }} </p>
+                        </div>
+                    </div>
+                </mat-card-content>
+                <mat-divider></mat-divider>
+            </mat-card>
+        </div>
+    </div>
+    <mat-card>
+        <mat-card-content>
+            <div fxLayout="row wrap" fxLayoutAlign="right" class="netPay">
+                <div>Net pay <p class="font-weight-bold">
+                        {{toFloat(payslipData?.net_pay?.amount) | currency : 'INR' : 'symbol'}} </p>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

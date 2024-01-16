@@ -1,0 +1,45 @@
+<form [formGroup]="payrollForm">
+    <div mat-dialog-title class="dialog-title">
+        User Payroll
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <mat-card class="user-card p-16">
+            <div class="text-16">Extra</div>
+            <div formArrayName="extra">
+                <ng-container *ngFor="let extra of extra.controls; index as i">
+                    <div [formGroupName]="i">
+                        <mat-card>
+                            <mat-card-content>
+                                <div class="pb-16">
+                                    Type: {{ getTextForType(extra.value.type) }}
+                                </div>
+                                <div class="pb-16">
+                                    <mat-form-field class="full-width">
+                                        <input formControlName="amount" matInput placeholder="Amount">
+                                        <mat-error> Please enter digits only</mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="pb-16">
+                                    <mat-form-field class="full-width">
+                                        <input formControlName="remark" matInput placeholder="Remark">
+                                    </mat-form-field>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                </ng-container>
+            </div>
+            <div mat-dialog-actions align="end">
+                <button mat-raised-button mat-dialog-close>Cancel</button>
+                <button mat-raised-button color="primary" [disabled]="payrollForm.invalid"
+                    (click)="onSubmitExtraForm()">Submit
+                </button>
+            </div>
+        </mat-card>
+    </div>
+</form>

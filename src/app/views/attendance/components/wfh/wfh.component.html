@@ -1,0 +1,230 @@
+<mat-tab-group>
+    <mat-tab label="Applied WFH">
+        <mat-card>
+            <mat-card-header class="title-card float-right">
+                <mat-card-title class="card-title-text title-card">
+                    <span>Attendance Date: {{ response?.attendance_date | date }}</span>
+                </mat-card-title>
+                <mat-divider></mat-divider>
+            </mat-card-header>
+            <mat-card-content>
+                <ng-container *ngIf="wfhUserList?.length > 0; else noWfh">
+                    <mat-checkbox class="pl-16 pt-16" (change)="selectOrDeselect($event)" [(ngModel)]="selectAll">
+                        Select All
+                    </mat-checkbox>
+                    <mat-selection-list [(ngModel)]="selectedItems" multiple (selectionChange)="onSelectionChange()">
+                        <mat-list-option checkboxPosition="before" [value]="user.user_id"
+                            *ngFor="let user of wfhUserList;">
+                            {{ getWfh(user?.user_id) }},
+                            Working Hours:{{ user?.working_hours}},
+                            Late Login Time: {{ user?.late_login_time }},
+                            Over Time Hours: {{ user?.ot_hours }}
+                        </mat-list-option>
+                    </mat-selection-list>
+                    <div class="pb-16">
+                        <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+                    </div>
+                    <button mat-raised-button color="primary" [disabled]="selectedItems.length === 0"
+                        (click)="onApproveWfh()">
+                        Submit
+                    </button>
+                </ng-container>
+                <ng-template #noWfh>
+                    <div class="p-16" *ngIf="!wfhUserList || wfhUserList?.length === 0">
+                        No work from home requests
+                    </div>
+                </ng-template>
+            </mat-card-content>
+        </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Previous WFH">
+        <mat-card>
+            <mat-card-content>
+                <div class="p-16 pb-0">
+                    <div>
+                        <mat-form-field>
+                            <input matInput name="shiftDate" [(ngModel)]="prevDate" placeholder="Previous date" 
+                                [matDatepicker]="prevDatepicker"
+                                (dateChange)="onChangePrevDate()"
+                                >
+                            <mat-datepicker-toggle matSuffix [for]="prevDatepicker"></mat-datepicker-toggle>
+                        </mat-form-field>
+                        <mat-datepicker #prevDatepicker></mat-datepicker>
+                    </div>
+                </div>
+                <mat-table [dataSource]="wfhApprovedList">
+                    <ng-container matColumnDef="sNo">
+                        <mat-header-cell *matHeaderCellDef>
+                            S.No
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row; let i = index" data-label="sNo">
+                            {{ i + 1}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="user_name">
+                        <mat-header-cell *matHeaderCellDef>
+                            Name
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="user_name">
+                            {{ getPrevRecordUser(row?.user_id) }},
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="late_login_time">
+                        <mat-header-cell *matHeaderCellDef>
+                            Late LogIn Time
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="lateLoginTime">
+                            {{ row?.late_login_time }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="working_hours">
+                        <mat-header-cell *matHeaderCellDef>
+                            Working Hours
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="workingHours">
+                            {{ row?.working_hours }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ot_hours">
+                        <mat-header-cell *matHeaderCellDef>
+                            OT Hours
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="otHours">
+                            {{ row?.ot_hours}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="status" class="primary">
+                        <mat-header-cell *matHeaderCellDef>
+                            Status
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="status">
+                            <span [ngClass]="row?.wfh_approve === '0'? 'text-red': 'text-green'">
+                                {{ row?.wfh_approve === "0" ? "Pending": "Approved" }}
+                            </span>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef>
+                          Actions
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                          <button *ngIf="row.wfh_approve === '0'" mat-icon-button color="primary" matTooltip="Approve"
+                          (click) ="openApproveConfirmation(row.user_id, approveConfirmation)" >
+                            <mat-icon>approvals</mat-icon>
+                          </button>
+                        </mat-cell>
+                      </ng-container>
+                    <mat-header-row *matHeaderRowDef="aprovedWfhDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: aprovedWfhDisplayedColumns;">
+                    </mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="wfhApprovedList.length === 0">No WFH Approved WFH</div>
+            </mat-card-content> 
+        </mat-card>
+    </mat-tab>
+
+    <mat-tab label="My WFH Logs">
+        <mat-card>
+            <mat-card-content>
+                <div class="p-16 pb-0">
+                    <div>
+                        <mat-form-field>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate [(ngModel)]="myWfhFromDate" placeholder="From date">
+                                <input matEndDate [(ngModel)]="myWfhToDate" placeholder="To date"
+                                (dateChange)="onChangeMyWfhDate($event)"
+                            >
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        </mat-form-field>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </div>
+                </div>
+                <mat-table [dataSource]="myWfhList">
+                    <ng-container matColumnDef="sNo">
+                        <mat-header-cell *matHeaderCellDef>
+                            S.No
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row; let i = index" data-label="sNo">
+                            {{ i + 1}}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="reporting_manager">
+                        <mat-header-cell *matHeaderCellDef>
+                            Reporting Manager
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="reporting_manager">
+                            {{ myWfhResponse?.user?.reporting_manager?.name }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="created_at">
+                        <mat-header-cell *matHeaderCellDef>
+                            Applied Date
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="created_at">
+                            {{ row?.created_at | date }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="late_login_time">
+                        <mat-header-cell *matHeaderCellDef>
+                            Late LogIn Time
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="lateLoginTime">
+                            {{ row?.late_login_time }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="working_hours">
+                        <mat-header-cell *matHeaderCellDef>
+                            Working Hours
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="workingHours">
+                            {{ row?.working_hours }}
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="ot_hours">
+                        <mat-header-cell *matHeaderCellDef>
+                            OT Hours
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="otHours">
+                            {{ row?.ot_hours}}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <mat-header-cell *matHeaderCellDef>
+                            Status
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row" data-label="status">
+                            <span [ngClass]="row?.wfh_approve === '0'? 'text-red': 'text-green'">
+                                {{ row?.wfh_approve === "0" ? "Pending": "Approved" }}
+                            </span>
+                        </mat-cell>
+                    </ng-container>
+                    
+                    <mat-header-row *matHeaderRowDef="myWfhDisplayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: myWfhDisplayedColumns;">
+                    </mat-row>
+                </mat-table>
+                <div class="p-16" *ngIf="myWfhList.length === 0">No work from home time logs </div>
+            </mat-card-content> 
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>
+
+<ng-template #approveConfirmation>
+    <h2 matDialogTitle>Are you sure you want to approve?</h2>
+    <mat-dialog-actions align="end">
+        <button mat-button matDialogClose="no">No</button>
+        <button mat-raised-button color="primary" matDialogClose="yes">Yes</button>
+    </mat-dialog-actions>
+</ng-template>

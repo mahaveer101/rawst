@@ -1,0 +1,31 @@
+<form [formGroup]="attendanceGroup">
+    <mat-card>
+        <div mat-dialog-title class="dialog-title">
+            Attendance
+            <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+                aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </div>
+        <mat-card-content>
+            <div class="p-16 pb-0">
+                <div>
+                    <mat-form-field class="full-width">
+                        <mat-label>Attendance</mat-label>
+                        <mat-select formControlName="attendance">
+                            <mat-option *ngFor="let att of attendances" [value]="att.value">
+                                {{ att.text }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div mat-dialog-actions align="end">
+                <button type="button" mat-raised-button [disabled]="attendanceGroup.invalid" color="primary" (click)="onSubmit()">
+                    Submit
+                </button>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

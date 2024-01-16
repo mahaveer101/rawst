@@ -1,0 +1,96 @@
+<mat-card >
+       <mat-card-content>
+        <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100">
+                <div fxFlex.gt-sm="25">Pay Slip <p class="font-weight-bold"> <a class="view-btn"
+                            (click)="viewPaySlip()">View Pay Slip</a> </p>
+                </div>
+                <div fxFlex.gt-sm="25">Salary Breakup<p class="font-weight-bold"> <a class="view-btn"
+                            (click)="viewSalaryBreakup()">View Salary Breakup</a> </p>
+                </div>
+
+            </div>
+        </div>
+    </mat-card-content>
+
+</mat-card>
+
+<div fxLayout="row wrap">
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
+        <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title>
+                <div class="card-title-text">
+                    <span class="text-18">Pan Information</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-sm="25">Name <p class="font-weight-bold"> {{salary?.name}} </p>
+                    </div>
+                    <div fxFlex.gt-sm="25">Pan Card<p class="font-weight-bold">{{salary?.pan_card}}
+                        </p>
+                    </div>
+                    <div fxFlex.gt-sm="25">Date Of Birth <p class="font-weight-bold"> {{salary?.dob | date}}
+                        </p>
+                    </div>
+                    <div fxFlex.gt-sm="25">Father Name<p class="font-weight-bold">
+                            {{salary?.father_name}}</p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100">
+        <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title>
+                <div class="card-title-text table-bottom">
+                    <span class="text-18">Payment Information</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+
+
+            <mat-card-content>
+                <div fxLayout="row wrap">
+                    <div fxFlex.gt-sm="25">Bank Name <p class="font-weight-bold">
+                            {{salary?.user_bank_records?.bank_name}}
+                        </p>
+                    </div>
+                    <div fxFlex.gt-sm="25">Account Number <p class="font-weight-bold">
+                            {{salary?.user_bank_records?.beneficiary_ac_no}} </p>
+                    </div>
+                    <div fxFlex.gt-sm="25">IFSC Code<p class="font-weight-bold">
+                            {{salary?.user_bank_records?.ifsc_no}}
+                        </p>
+                    </div>
+                    <div fxFlex.gt-sm="25">Name <p class="font-weight-bold"> {{salary?.name}} </p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+            <mat-card-title>
+                <div class="card-title-text table-bottom">
+                    <span class="text-18">Indentity Information</span>
+                    <span fxFlex></span>
+                </div>
+                <mat-divider></mat-divider>
+            </mat-card-title>
+            <mat-card-content>
+                <div fxLayout="row wrap" fxLayoutAlign="left space-around">
+                    <div>Name Of Adhar Card<p class="font-weight-bold">
+                            {{salary?.name}}</p>
+                    </div>
+                    <div class="ml-24">Adhar Number<p class="font-weight-bold">
+                            {{salary?.aadhar_card}}</p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

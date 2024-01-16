@@ -1,0 +1,55 @@
+<div class="m-12" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <button mat-raised-button class="mb-8" color="primary" (click)="addDepartment()">
+        Add Department
+    </button>
+    <button mat-raised-button class="mb-8 ml-24" color="primary" (click)="addBulkDepartment()">
+      Bulk upload Departments
+    </button>
+  </div>
+  <mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+    <mat-card-content class="p-0">
+      <mat-table [dataSource]="departmentList">
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="id"> {{row.id}} </mat-cell>
+        </ng-container>
+        
+        <ng-container matColumnDef="department_name">
+          <mat-header-cell *matHeaderCellDef> Department Name </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="department_name" [matTooltip]="row.department_name"> {{row.department_name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="working_days">
+          <mat-header-cell *matHeaderCellDef> Working days </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="working_days"> {{row.working_days}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="break_time">
+          <mat-header-cell *matHeaderCellDef> Break Time </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="break_time"> {{row.break_time}} Min </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="show_holiday_list">
+          <mat-header-cell *matHeaderCellDef> Holiday List </mat-header-cell>
+          <mat-cell *matCellDef="let row" data-label="show_holiday_list"> {{row.show_holiday_list==='1'?'Yes':'No'}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef>
+            Actions
+          </mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-icon-button color="primary" matTooltip="Edit" (click)="editDepartment(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <div class="p-16" *ngIf="departmentList?.data?.length === 0">No Department List</div>
+      <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+

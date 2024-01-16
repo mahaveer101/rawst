@@ -1,0 +1,48 @@
+.title-card {
+    padding: 1rem;
+}
+
+.title-card-right{
+    display: inline;
+    float: right;
+}
+  
+.title-card-left{
+    display: inline;
+}
+
+::ng-deep {
+    .mat-card-header-text{
+        width: 100% !important;
+    }
+}
+
+.start-btn {
+    background-color: #00e676;
+    color: white;
+}
+
+.stop-btn {
+    background-color: #ff8a65;
+    color: white;
+}
+
+.high-announcement {
+    animation-duration: 400ms;
+    animation-name: high-announcement-blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes high-announcement-blink {
+    from {
+       background-color: #ff3d57;
+    }
+    to {
+       background-color: #a86363;
+    }
+}
+
+.medium-announcement {
+    background-color: #ff8a65;
+}

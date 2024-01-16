@@ -1,0 +1,67 @@
+<div mat-dialog-title class="dialog-title">
+    Assets
+    <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<div mat-dialog-content>
+
+    <mat-card-title class="mb-16">
+        <div class="card-title-text">
+            <a href="" class="toolbar-avatar sm mr-16"><img src="assets/images/avatars/user.svg"
+                    class="mat-elevation-z1" alt=""></a>
+            <span class="text-16">
+                <div>
+                    {{assets[0]?.user_records?.name}}
+                </div>
+                <div>
+                    {{assets[0]?.user_records?.phone}}
+                </div>
+            </span>
+            <span fxFlex></span>
+        </div>
+        <mat-divider></mat-divider>
+    </mat-card-title>
+    <div fxLayout="row wrap">
+        <div *ngFor="let asset of assets" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100">
+            <mat-card class="user-card p-0">
+                <mat-card-title>
+                    <div class="card-title-text">
+                        <span class="text-13">{{asset.asset_name}}</span>
+                        <span fxFlex></span>
+                        <button class="close-button" mat-icon-button color="primary" matTooltip="Edit" (click)="editAsset(asset)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </div>
+                </mat-card-title>
+                <mat-card-content>
+                    <div fxLayout="row wrap">
+                        <div fxFlex.gt-sm="33">Asset Name <p class="font-weight-bold word-wrap-break-word">{{asset.asset_name}}</p>
+                        </div>
+                        <div fxFlex.gt-sm="33">Asset Id <p class="font-weight-bold word-wrap-break-word">{{asset.asset_code}}</p>
+                        </div>
+                        <div fxFlex.gt-sm="34">Location <p class="font-weight-bold word-wrap-break-word">{{asset.location}}</p>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap">
+                        <div fxFlex.gt-sm="33">Category <p class="font-weight-bold">{{asset.category}}</p>
+                        </div>
+                        <div fxFlex.gt-sm="33">Asset Type <p class="font-weight-bold">{{asset.asset_type}}</p>
+                        </div>
+                        <div fxFlex.gt-sm="34">Condition <p class="font-weight-bold">{{asset.condition}}</p>
+                        </div>
+                    </div>
+                    <div *ngIf="asset?.users_assets_images_records.length > 0">Asset Image
+                        <div fxLayout="row wrap">
+                            <div *ngFor="let image of asset?.users_assets_images_records">
+                                <button mat-icon-button (click)="viewDocument(image.asset_image)">
+                                    <mat-icon>attach_file </mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

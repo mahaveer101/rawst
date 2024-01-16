@@ -1,0 +1,61 @@
+<form [formGroup]="previousIncentiveForm">
+    <div mat-dialog-title class="dialog-title">
+        Incentive
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <mat-select name="financial_year" formControlName="financial_year" placeholder="Finacial Year">
+                    <mat-option *ngFor="let each of financialYears" [value]="each"> 
+                        {{ each }}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="previousIncentiveForm.get('financial_year').hasError('required')">
+                    Finacial year is required
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="total_incentive" matInput placeholder="Total Incentive">
+                <mat-error *ngIf="previousIncentiveForm.get('total_incentive').hasError('required')">
+                    Tax is required
+                </mat-error>
+                <mat-error
+                    *ngIf="previousIncentiveForm.get('total_incentive').hasError('pattern') && !previousIncentiveForm.get('total_incentive').hasError('required')">
+                    Please Enter Digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="previous_incentive_given" matInput placeholder="Previous Incentive">
+                <mat-error *ngIf="previousIncentiveForm.get('previous_incentive_given').hasError('required')">
+                    Previous Incentive is required
+                </mat-error>
+                <mat-error
+                    *ngIf="previousIncentiveForm.get('previous_incentive_given').hasError('pattern') && !previousIncentiveForm.get('previous_incentive_given').hasError('required')">
+                    Please Enter Digits only
+                </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="previousIncentiveForm.invalid"
+                (click)="onSubmitPreviousIncentiveForm()"> Submit
+            </button>
+        </div>
+
+    </div>
+</form>

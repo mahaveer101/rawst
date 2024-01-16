@@ -1,0 +1,37 @@
+<mat-card>
+    <div mat-dialog-title class="dialog-title">
+        Add Bulk Previous Incentive
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <mat-card-content>
+        <div>
+            <button (click)="fileInputBulkEmployes.click()" mat-raised-button color="primary">
+                Bulk Previous Incentive
+                <mat-icon>attach_file </mat-icon>
+            </button>
+            <input style="display:none" type="file" (change)="onfileChangedBulkPreviousIncentive($event)" #fileInputBulkEmployes
+                accept=".xlsx, .xls" />
+            
+            <div *ngIf="fileNameBulkPreviousIncentive">
+                {{ fileNameBulkPreviousIncentive }}
+                <button mat-icon-button (click)="removeSelectedFileBulkPreviousIncentive()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="pb-16">
+                <mat-error *ngIf="errorMessage"> {{ errorMessagePartA }}</mat-error>
+            </div>
+            
+            <div mat-dialog-actions>
+                <button mat-raised-button color="primary"
+                    [disabled]="!bulkPreviousIncentiveForm"
+                 (click)="submitBulkPreviousIncentiveForm()">Submit
+                </button>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

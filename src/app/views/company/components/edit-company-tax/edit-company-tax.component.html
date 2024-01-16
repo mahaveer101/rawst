@@ -1,0 +1,56 @@
+<form [formGroup]="companyTaxForm">
+    <div mat-dialog-title class="dialog-title">
+        Tax Settings
+        <button class="close-button" mat-icon-button mat-dialog-close (click)="dialogRef.close()"
+            aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div mat-dialog-content>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matInput name="startDate" formControlName="startDate" placeholder="Start Date"
+                    [matDatepicker]="startDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="startDatepicker"></mat-datepicker-toggle>
+                <mat-error> Start Date required</mat-error>
+            </mat-form-field>
+            <mat-datepicker #startDatepicker></mat-datepicker>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input matInput name="endDate" formControlName="endDate" placeholder="End Date"
+                    [matDatepicker]="endDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="endDatepicker"></mat-datepicker-toggle>
+                <mat-error> End Date required</mat-error>
+            </mat-form-field>
+            <mat-datepicker #endDatepicker></mat-datepicker>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="standardDeduction" matInput placeholder="Standard deduction">
+                <mat-error> Standared deduction required </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-form-field class="full-width">
+                <input formControlName="surchargesPercentage" matInput placeholder="Surcharges Percentage">
+                <mat-error> Surcharges percentage required </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="pb-16">
+            <mat-error *ngIf="errorMessage"> {{ errorMessage }}</mat-error>
+        </div>
+
+        <div mat-dialog-actions align="end">
+            <button mat-raised-button mat-dialog-close>Cancel</button>
+            <button mat-raised-button color="primary" [disabled]="companyTaxForm.invalid"
+                (click)="onSubmitCompanyTaxForm()">Submit
+            </button>
+        </div>
+    </div>
+</form>
